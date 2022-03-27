@@ -7,13 +7,14 @@ require(`express-static`);
 const path = require(`path`);
 // const users = require(`./models/userdb`);
 // const kategori = require(`./models/kategori`);
+// const produk = require(`./models/produk`);
 // DB
 const db = require(`./database`);
 
 try {
   db.authenticate();
   console.log(`Database Connected`);
-  // db.sync(kategori);
+  // db.sync(produk);
 } catch (error) {
   console.log(error);
 }

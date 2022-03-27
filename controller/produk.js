@@ -12,20 +12,20 @@ module.exports = {
 
             if (produk.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
-            const kategori = await Kategori.findByPk(produk.id_kategori, {
-                attributes: [`nama_kategori`],
-            });
+            // let kategori = await Kategori.findByPk(produk.id_kategori, {
+            //     attributes: [`nama_kategori`],
+            // });
 
-            let result = {
-                produk: {
-                    nama_produk: produk.nama_produk,
-                    desc: produk.desc,
-                    harga: produk.harga,
-                    image: produk.image,
-                    slug: produk.slug
-                },
-                kategori,
-            };
+            let result = produk.map((obj) => {
+                return {
+                    nama_produk: obj.nama_produk,
+                    kategori: obj.id_kategori,
+                    desc: obj.desc,
+                    harga: obj.harga,
+                    image: obj.image,
+                    slug: obj.slug
+                }
+            })
 
             return res.json({ status: 200, msg: `OK`, data: result });
         } catch (error) {
@@ -49,6 +49,9 @@ module.exports = {
                 limit: 10,
                 attributes: [`nama_produk`, `image`, `slug`, `harga`],
                 where: { id_kategori: produk.id_kategori, slug: { [Op.ne]: produk.slug } },
+                order: [
+                    [`createdAt`, `DESC`]
+                ],
                 raw: true,
             });
 
@@ -63,16 +66,16 @@ module.exports = {
             let result = {
                 produk: {
                     nama_produk: produk.nama_produk,
+                    kategori: kategori.nama_kategori,
                     desc: produk.desc,
                     harga: produk.harga,
                     image: produk.image,
                     slug: produk.slug
                 },
-                kategori,
                 produkSameCategory
             }
 
-            return res.json({ status: 200, msg: `OK`, data: result });
+            return res.json({ status: 200, msg: `OK`, data: [result] });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

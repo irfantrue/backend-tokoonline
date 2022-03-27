@@ -9,7 +9,10 @@ const Keranjang = db.define(`keranjang`,{
     },
     id_user:{
         type: DataTypes.INTEGER
-    }
+    },
+    jumlah:{
+        type: DataTypes.INTEGER
+    },
 },{
     freezeTableName: true
 });
