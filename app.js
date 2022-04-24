@@ -8,13 +8,14 @@ const path = require(`path`);
 // const users = require(`./models/userdb`);
 // const kategori = require(`./models/kategori`);
 // const produk = require(`./models/produk`);
+// const keranjang = require(`./models/keranjang`);
 // DB
 const db = require(`./database`);
 
 try {
   db.authenticate();
   console.log(`Database Connected`);
-  // db.sync(produk);
+  // db.sync(keranjang);
 } catch (error) {
   console.log(error);
 }

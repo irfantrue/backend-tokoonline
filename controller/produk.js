@@ -12,10 +12,6 @@ module.exports = {
 
             if (produk.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
-            // let kategori = await Kategori.findByPk(produk.id_kategori, {
-            //     attributes: [`nama_kategori`],
-            // });
-
             let result = produk.map((obj) => {
                 return {
                     nama_produk: obj.nama_produk,

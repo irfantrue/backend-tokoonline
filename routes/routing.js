@@ -1,6 +1,5 @@
 const express = require(`express`);
 const router = express.Router();
-const verifytoken = require(`../middleware/verifyToken`);
 const { login, signup } = require(`../controller/loginregis`);
 const { 
     getKategori, 
@@ -20,6 +19,13 @@ const {
     addCart,
     cancelCart
 } = require(`../controller/home`);
+const {
+    uploadImage,
+    deleteImage
+} = require(`../controller/upload`);
+const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
+const imageupload = require(`../middleware/imageupload`);
+const verifytoken = require(`../middleware/verifyToken`);
 
 // ROUTE LOGIN
 router.post(`/login`, login);
@@ -50,6 +56,12 @@ router
     .put(verifytoken, updateKategori)
     // DELETE KATEGORI
     .delete(verifytoken, deleteKategori);
+
+// ROUTE UPLOAD IMAGE
+router.post(`/upload-image`, verifytoken, imageupload, fileSizeLimitErrorHandler, uploadImage);
+
+// ROUTE DELETE IMAGE
+router.post(`/delete-image`, verifytoken, deleteImage);
 
 // ROUTE PRODUK
 router
