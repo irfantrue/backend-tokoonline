@@ -3,12 +3,24 @@ const db = require(`../database`);
 
 const {DataTypes} = Sequelize;
 
-const Keranjang = db.define(`keranjang`,{
+const Transaksi = db.define(`transaksi`,{
     id_produk:{
         type: DataTypes.INTEGER
     },
     id_user:{
         type: DataTypes.INTEGER
+    },
+    image:{
+        type: DataTypes.STRING
+    },
+    alamat_user:{
+        type: DataTypes.TEXT
+    },
+    alamat_tujuan:{
+        type: DataTypes.TEXT
+    },
+    pembayaran:{
+        type: DataTypes.STRING
     },
     jumlah:{
         type: DataTypes.INTEGER
@@ -16,11 +28,14 @@ const Keranjang = db.define(`keranjang`,{
     harga:{
         type: DataTypes.INTEGER
     },
-    image:{
+    total_harga:{
+        type: DataTypes.INTEGER
+    },
+    status:{
         type: DataTypes.STRING
-    }
+    },
 },{
     freezeTableName: true
 });
 
-module.exports = Keranjang;
+module.exports = Transaksi;

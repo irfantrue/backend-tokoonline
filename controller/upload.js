@@ -1,6 +1,4 @@
 const fs = require(`fs`);
-const Validator = require("fastest-validator");
-const v = new Validator();
 
 module.exports = {
   uploadImage: async (req, res) => {

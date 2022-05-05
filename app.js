@@ -9,13 +9,14 @@ const path = require(`path`);
 // const kategori = require(`./models/kategori`);
 // const produk = require(`./models/produk`);
 // const keranjang = require(`./models/keranjang`);
+// const transaksi = require(`./models/transaksi`);
 // DB
 const db = require(`./database`);
 
 try {
   db.authenticate();
   console.log(`Database Connected`);
-  // db.sync(keranjang);
+  // db.sync(transaksi);
 } catch (error) {
   console.log(error);
 }

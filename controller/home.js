@@ -1,10 +1,11 @@
 const Produk = require(`../models/produk`);
 const Validator = require(`fastest-validator`);
+const Users = require(`../models/userdb`);
+const Keranjang = require('../models/keranjang');
 const v = new Validator();
 const db = require('../database');
 const { QueryTypes } = require('sequelize');
 const jwt_decode = require(`jwt-decode`);
-const Keranjang = require('../models/keranjang');
 
 module.exports = {
 
@@ -38,26 +39,38 @@ module.exports = {
 
             let decode = jwt_decode(token);
 
+            const user = await Users.findOne({ where: { email: decode.email } });
+
             const schema = {
                 id_produk: `number|empty:false`,
                 id_user: `number|empty:false`,
-                jumlah: `number|empty:false`
+                jumlah: `number|empty:false`,
+                harga: `number|empty:false`,
+                image: `string|empty:false`
             };
 
             const check = v.compile(schema);
-
+            
             const result = check({
                 id_produk: produk.id,
-                id_user: decode.id,
-                jumlah: 1
+                id_user: user.id,
+                jumlah: 1,
+                harga: produk.harga,
+                image: produk.image
             });
 
             if (result != true) return res.json({ status: 400, msg: result });
 
+            const duplikat_produk = await Keranjang.findOne({ where: { id_user: user.id, id_produk: produk.id } });
+
+            if (duplikat_produk) return res.json({ status: 409, msg: `Produk sama sudah ada di keranjang` });
+
             await Keranjang.create({
                 id_produk: produk.id,
-                id_user: decode.id,
-                jumlah: 1
+                id_user: user.id,
+                jumlah: 1,
+                harga: produk.harga,
+                image: produk.image
             });
 
             return res.json({ status: 201, msg: `Berhasil menambahkan` });
@@ -80,7 +93,9 @@ module.exports = {
 
             let decode = jwt_decode(token);
 
-            const keranjang = await Keranjang.findOne({ where: { id_produk: id_produk, id_user: decode.id } });
+            const user = await Users.findOne({ where: { email: decode.email } });
+
+            const keranjang = await Keranjang.findOne({ where: { id_produk: produk.id, id_user: user.id } });
 
             if (!keranjang) return res.json({ status: 404, msg: `Produk keranjang Not Found` });
 

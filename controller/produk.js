@@ -71,7 +71,7 @@ module.exports = {
                 produkSameCategory
             }
 
-            return res.json({ status: 200, msg: `OK`, data: [result] });
+            return res.json({ status: 200, msg: `OK`, data: result });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }
@@ -217,9 +217,15 @@ module.exports = {
             if (!produk) return res.json({ status: 404, msg: `Data Not Found` });
 
             // delete all in cart
+            await Keranjang.destroy({
+                where: { id_produk: produk.id}
+            });
 
             // delete all in transaksi
-            
+            await Transaksi.destroy({
+                where: { id_produk: produk.id}
+            });
+
             await Produk.destroy({
                 where: { slug: slug },
             });

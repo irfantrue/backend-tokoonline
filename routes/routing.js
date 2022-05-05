@@ -23,6 +23,17 @@ const {
     uploadImage,
     deleteImage
 } = require(`../controller/upload`);
+const {
+    checkout,
+    tambahjumlahproduk,
+    kurangjumlahproduk,
+    getallkeranjang
+} = require(`../controller/keranjang`);
+const {
+    getalltransaksi,
+    updatStatusProduk,
+    getTransaksi
+} = require(`../controller/transaksi`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
@@ -37,10 +48,30 @@ router.post(`/signup`, signup);
 router.get(`/home-produk`, home);
 
 // ROUTE ADD CART
-router.post(`/add-produk`, verifytoken, addCart);
+router.post(`/add-produk/:slug`, verifytoken, addCart);
 
 // ROUTE CANCEL CART
-router.delete(`/delete-cart`,verifytoken, cancelCart);
+router.delete(`/delete-cart/:slug`,verifytoken, cancelCart);
+
+// ROUTE GET ALL KERANJANG
+router.get(`/cart`, verifytoken, getallkeranjang);
+
+// ROUTE CHECKOUT
+router.post(`/checkout`, verifytoken, checkout);
+
+// ROUTE TAMBAH/KURANG JUMLAH KERANJANG
+router.put(`/tambah-jumlah/:id`, verifytoken, tambahjumlahproduk);
+
+router.put(`/kurang-jumlah/:id`, verifytoken, kurangjumlahproduk);
+
+// ROUTE TRANSAKSI
+router.get(`/transaksi-user`, verifytoken, getalltransaksi);
+
+// ROUTE GET ALL TRANSAKSI DATA
+router.get(`/transaksi`, verifytoken, getTransaksi);
+
+// ROUTE UPDATE STATUS TRANSAKSI
+router.put(`/update-transaksi/:id`, verifytoken, updatStatusProduk)
 
 // ROUTE KATEGORI
 router
