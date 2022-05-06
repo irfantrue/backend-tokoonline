@@ -1,13 +1,9 @@
 const Produk = require(`../models/produk`);
 const Validator = require(`fastest-validator`);
 const Users = require(`../models/userdb`);
-const Keranjang = require('../models/keranjang');
 const v = new Validator();
-const db = require('../database');
-const { QueryTypes } = require('sequelize');
 const jwt_decode = require(`jwt-decode`);
 const Transaksi = require('../models/transaksi');
-const Kategori = require('../models/kategori');
 
 module.exports = {
 
@@ -58,6 +54,8 @@ module.exports = {
             const transaksi = await Transaksi.findByPk(id);
 
             if (!transaksi) return res.json({ status: 404, msg: `Transaksi item tidak ditemukan` });
+
+            if (transaksi.status == `selesai` || transaksi.status == `pengiriman`) return res.json({ msg: `Transaksi tidak bisa dibatalkan` });
 
             await transaksi.destroy();
 
