@@ -30,9 +30,9 @@ const {
     getallkeranjang
 } = require(`../controller/keranjang`);
 const {
-    getalltransaksi,
-    updatStatusProduk,
     getTransaksi,
+    updatStatusTransaksi,
+    getAllTransaksiUser,
     batalTransaksi
 } = require(`../controller/transaksi`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
@@ -60,22 +60,23 @@ router.get(`/cart`, verifytoken, getallkeranjang);
 // ROUTE CHECKOUT
 router.post(`/checkout`, verifytoken, checkout);
 
-// ROUTE TAMBAH/KURANG JUMLAH KERANJANG
+// ROUTE TAMBAH/KURANG JUMLAH PRODUK KERANJANG
 router.put(`/tambah-jumlah/:id`, verifytoken, tambahjumlahproduk);
 
 router.put(`/kurang-jumlah/:id`, verifytoken, kurangjumlahproduk);
 
 // ROUTE TRANSAKSI
-router.get(`/transaksi-user`, verifytoken, getalltransaksi);
-
-// ROUTE BATAL TRANSAKSI
-router.delete(`/batal-transaksi/:id`, verifytoken, batalTransaksi);
+router.get(`/transaksi-user`, verifytoken, getTransaksi);
 
 // ROUTE GET ALL TRANSAKSI DATA
-router.get(`/transaksi`, verifytoken, getTransaksi);
+router.get(`/transaksi`, verifytoken, getAllTransaksiUser);
 
-// ROUTE UPDATE STATUS TRANSAKSI
-router.put(`/update-transaksi/:id`, verifytoken, updatStatusProduk)
+router
+    .route(`/transaksi/:id`)
+    // ROUTE UPDATE STATUS TRANSAKSI (ADMIN)
+    .put(verifytoken, updatStatusTransaksi)
+    // ROUTE BATAL TRANSAKSI / ORDER (User)
+    .delete(verifytoken, batalTransaksi);
 
 // ROUTE KATEGORI
 router

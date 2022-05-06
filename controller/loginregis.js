@@ -58,6 +58,8 @@ module.exports = {
                 level
             } = req.body;
             
+            // level = `User`;
+
             const schema = {
                 fullname: "string|empty:false|min:3|max:30",
                 email: "email|empty:false",
