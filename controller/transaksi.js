@@ -7,6 +7,7 @@ const db = require('../database');
 const { QueryTypes } = require('sequelize');
 const jwt_decode = require(`jwt-decode`);
 const Transaksi = require('../models/transaksi');
+const Kategori = require('../models/kategori');
 
 module.exports = {
 
@@ -26,6 +27,7 @@ module.exports = {
 
             let produk = transaksi.map((obj) => {
                 return {
+                    id: obj.id,
                     image: obj.image,
                     alamat_tujuan: obj.alamat_tujuan,
                     pembayaran: obj.pembayaran,
@@ -49,7 +51,23 @@ module.exports = {
         }
     },
 
-    // UNTUK ADMIN
+    batalTransaksi: async (req, res) => {
+        try {
+            const {id} = req.params;
+
+            const transaksi = await Transaksi.findByPk(id);
+
+            if (!transaksi) return res.json({ status: 404, msg: `Transaksi item tidak ditemukan` });
+
+            await transaksi.destroy();
+
+            return res.json({ status: 200, msg: `Berhasil batal order` });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    // UNTUK ADMIN DASHBOARD
     getTransaksi: async (req, res) => {
         try {
             const transaksi = await Transaksi.findAll();

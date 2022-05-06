@@ -32,7 +32,8 @@ const {
 const {
     getalltransaksi,
     updatStatusProduk,
-    getTransaksi
+    getTransaksi,
+    batalTransaksi
 } = require(`../controller/transaksi`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
@@ -66,6 +67,9 @@ router.put(`/kurang-jumlah/:id`, verifytoken, kurangjumlahproduk);
 
 // ROUTE TRANSAKSI
 router.get(`/transaksi-user`, verifytoken, getalltransaksi);
+
+// ROUTE BATAL TRANSAKSI
+router.delete(`/batal-transaksi/:id`, verifytoken, batalTransaksi);
 
 // ROUTE GET ALL TRANSAKSI DATA
 router.get(`/transaksi`, verifytoken, getTransaksi);
