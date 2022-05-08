@@ -4,7 +4,7 @@ const v = new Validator();
 
 module.exports = {
 
-    getKategori: async (req, res) => {
+    get_all_kategori: async (req, res) => {
         try {
             const kategori = await Kategori.findAll();
 
@@ -16,7 +16,7 @@ module.exports = {
         }
     },
 
-    addKategori: async (req, res) => {
+    add_kategori: async (req, res) => {
         try {
             const { nama_kategori } = req.body;
 
@@ -48,7 +48,7 @@ module.exports = {
         }
     },
 
-    updateKategori: async (req, res) => {
+    update_kategori: async (req, res) => {
         try {
             const { nama_kategori } = req.body;
 
@@ -86,7 +86,7 @@ module.exports = {
         }
     },
 
-    deleteKategori: async (req, res) => {
+    delete_kategori: async (req, res) => {
         try {
             const {id} = req.params;
 

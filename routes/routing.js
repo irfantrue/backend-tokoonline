@@ -2,38 +2,38 @@ const express = require(`express`);
 const router = express.Router();
 const { login, signup } = require(`../controller/loginregis`);
 const { 
-    getKategori, 
-    addKategori, 
-    updateKategori, 
-    deleteKategori 
+    get_all_kategori, 
+    add_kategori, 
+    update_kategori, 
+    delete_kategori 
 } = require(`../controller/kategori`);
 const {
-    getAllProduk,
-    detailProduk,
-    addProduk,
-    updateProduk,
-    deleteProduk
+    get_all_produk,
+    detail_produk,
+    add_produk,
+    update_produk,
+    delete_produk
 } = require(`../controller/produk`);
 const {
     home,
-    addCart,
-    cancelCart
+    add_cart,
+    cancel_cart
 } = require(`../controller/home`);
 const {
-    uploadImage,
-    deleteImage
+    upload_image,
+    delete_image
 } = require(`../controller/upload`);
 const {
     checkout,
-    tambahjumlahproduk,
-    kurangjumlahproduk,
-    getallkeranjang
+    tambah_jumlah_produk,
+    kurang_jumlah_produk,
+    get_all_cart
 } = require(`../controller/keranjang`);
 const {
-    getTransaksi,
-    updatStatusTransaksi,
-    getAllTransaksiUser,
-    batalTransaksi
+    get_produk_transaksi,
+    update_status_transaksi,
+    get_all_transaksi_user,
+    batal_transaksi
 } = require(`../controller/transaksi`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
@@ -49,71 +49,71 @@ router.post(`/signup`, signup);
 router.get(`/home-produk`, home);
 
 // ROUTE ADD CART
-router.post(`/add-produk/:slug`, verifytoken, addCart);
+router.post(`/add-produk/:slug`, verifytoken, add_cart);
 
 // ROUTE CANCEL CART
-router.delete(`/delete-cart/:slug`,verifytoken, cancelCart);
+router.delete(`/delete-cart/:slug`,verifytoken, cancel_cart);
 
 // ROUTE GET ALL KERANJANG
-router.get(`/cart`, verifytoken, getallkeranjang);
+router.get(`/cart`, verifytoken, get_all_cart);
 
 // ROUTE CHECKOUT
 router.post(`/checkout`, verifytoken, checkout);
 
 // ROUTE TAMBAH/KURANG JUMLAH PRODUK KERANJANG
-router.put(`/tambah-jumlah/:id`, verifytoken, tambahjumlahproduk);
+router.put(`/tambah-jumlah/:id`, verifytoken, tambah_jumlah_produk);
 
-router.put(`/kurang-jumlah/:id`, verifytoken, kurangjumlahproduk);
+router.put(`/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 
 // ROUTE TRANSAKSI
-router.get(`/transaksi-user`, verifytoken, getTransaksi);
+router.get(`/transaksi-user`, verifytoken, get_produk_transaksi);
 
-// ROUTE GET ALL TRANSAKSI DATA
-router.get(`/transaksi`, verifytoken, getAllTransaksiUser);
+// ROUTE GET ALL TRANSAKSI DATA (ADMIN)
+router.get(`/transaksi`, verifytoken, get_all_transaksi_user);
 
 router
     .route(`/transaksi/:id`)
     // ROUTE UPDATE STATUS TRANSAKSI (ADMIN)
-    .put(verifytoken, updatStatusTransaksi)
+    .put(verifytoken, update_status_transaksi)
     // ROUTE BATAL TRANSAKSI / ORDER (User)
-    .delete(verifytoken, batalTransaksi);
+    .delete(verifytoken, batal_transaksi);
 
 // ROUTE KATEGORI
 router
     .route(`/kategori`)
     // GET KATEGORI
-    .get(verifytoken, getKategori)
+    .get(verifytoken, get_all_kategori)
     // ADD KATEGORI
-    .post(verifytoken, addKategori);
+    .post(verifytoken, add_kategori);
 
 router
     .route(`/kategori/:id`)
     // UPDATE KATEGORI
-    .put(verifytoken, updateKategori)
+    .put(verifytoken, update_kategori)
     // DELETE KATEGORI
-    .delete(verifytoken, deleteKategori);
+    .delete(verifytoken, delete_kategori);
 
 // ROUTE UPLOAD IMAGE
-router.post(`/upload-image`, verifytoken, imageupload, fileSizeLimitErrorHandler, uploadImage);
+router.post(`/upload-image`, verifytoken, imageupload, fileSizeLimitErrorHandler, upload_image);
 
 // ROUTE DELETE IMAGE
-router.post(`/delete-image`, verifytoken, deleteImage);
+router.post(`/delete-image`, verifytoken, delete_image);
 
 // ROUTE PRODUK
 router
     .route(`/produk`)
     // ADD PRODUK
-    .post(verifytoken, addProduk)
+    .post(verifytoken, add_produk)
     // GET ALL PRODUK
-    .get(verifytoken, getAllProduk);
+    .get(verifytoken, get_all_produk);
 
 router
     .route(`/produk/:slug`)
     // DETAIL PRODUK
-    .get(detailProduk)
+    .get(detail_produk)
     // UPDATE PRODUK
-    .put(verifytoken, updateProduk)
+    .put(verifytoken, update_produk)
     // DELETE PRODUK
-    .delete(verifytoken, deleteProduk);
+    .delete(verifytoken, delete_produk);
     
 module.exports = router;

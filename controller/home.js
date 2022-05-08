@@ -25,7 +25,7 @@ module.exports = {
         }
     },
 
-    addCart: async (req, res) => {
+    add_cart: async (req, res) => {
         try {
             const { slug } = req.params;
 
@@ -79,7 +79,7 @@ module.exports = {
         }
     },
 
-    cancelCart: async (req, res) => {
+    cancel_cart: async (req, res) => {
         try {
             const { slug } = req.params;
 

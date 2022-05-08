@@ -1,7 +1,7 @@
 const fs = require(`fs`);
 
 module.exports = {
-  uploadImage: async (req, res) => {
+  upload_image: async (req, res) => {
     try {
       if (!req.file) {
         return res.send({
@@ -23,7 +23,7 @@ module.exports = {
     }
   },
 
-  deleteImage: async (req, res) => {
+  delete_image: async (req, res) => {
     try {
       const { image } = req.body;
       fs.unlink(`./public/images/${image}`, async (err) => {

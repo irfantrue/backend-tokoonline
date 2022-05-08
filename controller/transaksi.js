@@ -7,7 +7,7 @@ const Transaksi = require('../models/transaksi');
 
 module.exports = {
 
-    getTransaksi: async (req, res) => {
+    get_produk_transaksi: async (req, res) => {
         try {
             const authHeader = req.headers[`authorization`];
 
@@ -47,7 +47,7 @@ module.exports = {
         }
     },
 
-    batalTransaksi: async (req, res) => {
+    batal_transaksi: async (req, res) => {
         try {
             const {id} = req.params;
 
@@ -66,7 +66,7 @@ module.exports = {
     },
 
     // UNTUK ADMIN DASHBOARD
-    getAllTransaksiUser: async (req, res) => {
+    get_all_transaksi_user: async (req, res) => {
         try {
             const transaksi = await Transaksi.findAll();
 
@@ -78,7 +78,7 @@ module.exports = {
         }
     },
 
-    updatStatusTransaksi: async (req, res) => {
+    update_status_transaksi: async (req, res) => {
         try {
             const {
                 status

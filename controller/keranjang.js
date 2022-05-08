@@ -8,7 +8,7 @@ const Produk = require(`../models/produk`);
 
 module.exports = {
 
-    getallkeranjang: async (req, res) => {
+    get_all_cart: async (req, res) => {
         try {
             const authHeader = req.headers[`authorization`];
 
@@ -66,7 +66,7 @@ module.exports = {
         }
     },
 
-    tambahjumlahproduk: async (req, res) => {
+    tambah_jumlah_produk: async (req, res) => {
         try {
             const {
                 id
@@ -88,7 +88,7 @@ module.exports = {
         }
     },
 
-    kurangjumlahproduk: async (req, res) => {
+    kurang_jumlah_produk: async (req, res) => {
         try {
             const {
                 id

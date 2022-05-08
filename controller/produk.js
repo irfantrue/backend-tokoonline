@@ -6,7 +6,7 @@ const v = new Validator();
 
 module.exports = {
 
-    getAllProduk: async (req, res) => {
+    get_all_produk: async (req, res) => {
         try {
             const produk = await Produk.findAll();
 
@@ -29,7 +29,7 @@ module.exports = {
         }
     },
 
-    detailProduk: async (req, res) => {
+    detail_produk: async (req, res) => {
         try {
             const { slug } = req.params;
 
@@ -77,7 +77,7 @@ module.exports = {
         }
     },
 
-    addProduk: async (req, res) => {
+    add_produk: async (req, res) => {
         try {
             const { 
                 nama_produk,
@@ -136,7 +136,7 @@ module.exports = {
         }
     },
 
-    updateProduk: async (req, res) => {
+    update_produk: async (req, res) => {
         try {
             const { 
                 nama_produk,
@@ -206,7 +206,7 @@ module.exports = {
         }
     },
 
-    deleteProduk: async (req, res) => {
+    delete_produk: async (req, res) => {
         try {
             const { slug } = req.params;
 
