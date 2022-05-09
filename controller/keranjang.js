@@ -69,12 +69,12 @@ module.exports = {
     tambah_jumlah_produk: async (req, res) => {
         try {
             const {
-                id
+                slug
             } = req.params;
 
             let jumlah = 1;
 
-            const tambah = await Keranjang.findByPk(id);
+            const tambah = await Keranjang.findOne({ where: { slug: slug } });
 
             if (!tambah) return res.json({ status: 404, msg: `Data Not Found` });
 
@@ -91,12 +91,12 @@ module.exports = {
     kurang_jumlah_produk: async (req, res) => {
         try {
             const {
-                id
+                slug
             } = req.params;
 
             let jumlah = 1;
 
-            const kurang = await Keranjang.findByPk(id);
+            const kurang = await Keranjang.findOne({ where: { slug: slug } });
 
             if (!kurang) return res.json({ status: 404, msg: `Data Not Found` });
 

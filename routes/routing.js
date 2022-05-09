@@ -1,6 +1,9 @@
 const express = require(`express`);
 const router = express.Router();
-const { login, signup } = require(`../controller/loginregis`);
+const { 
+    login, 
+    signup 
+} = require(`../controller/loginregis`);
 const { 
     get_all_kategori, 
     add_kategori, 
@@ -58,12 +61,12 @@ router.delete(`/delete-cart/:slug`,verifytoken, cancel_cart);
 router.get(`/cart`, verifytoken, get_all_cart);
 
 // ROUTE CHECKOUT
-router.post(`/checkout`, verifytoken, checkout);
+router.post(`/cart/checkout`, verifytoken, checkout);
 
 // ROUTE TAMBAH/KURANG JUMLAH PRODUK KERANJANG
-router.put(`/tambah-jumlah/:id`, verifytoken, tambah_jumlah_produk);
+router.put(`/cart/tambah-jumlah/:slug`, verifytoken, tambah_jumlah_produk);
 
-router.put(`/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
+router.put(`/cart/kurang-jumlah/:slug`, verifytoken, kurang_jumlah_produk);
 
 // ROUTE TRANSAKSI
 router.get(`/transaksi-user`, verifytoken, get_produk_transaksi);

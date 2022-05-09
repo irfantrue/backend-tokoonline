@@ -1,4 +1,5 @@
 const Kategori = require(`../models/kategori`);
+const Produk = require(`../models/produk`);
 const Validator = require(`fastest-validator`);
 const v = new Validator();
 

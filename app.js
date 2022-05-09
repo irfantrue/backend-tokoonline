@@ -29,6 +29,9 @@ app.use(cors());
 // STATIC FOLDER
 app.use(express.static(path.join(__dirname, `/public`)));
 
+// SET ENGINE EJS
+app.set(`view engine`, `ejs`);
+
 // IMPORT ROUTE
 const routing = require(`./routes/routing`);
 

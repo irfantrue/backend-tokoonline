@@ -1,4 +1,3 @@
-// (const Users model schema database)
 const Users = require(`../models/userdb`);
 const Crypto = require(`crypto-js`);
 const jwt = require(`jsonwebtoken`);
@@ -55,10 +54,10 @@ module.exports = {
                 email,
                 password,
                 address,
-                level
+                // level
             } = req.body;
             
-            // level = `User`;
+            let level = `User`;
 
             const schema = {
                 fullname: "string|empty:false|min:3|max:30",

@@ -1,6 +1,8 @@
 const Produk = require(`../models/produk`);
 const Validator = require(`fastest-validator`);
 const Kategori = require(`../models/kategori`);
+const Keranjang = require('../models/keranjang');
+const Transaksi = require('../models/transaksi');
 const { Op } = require("sequelize");
 const v = new Validator();
 
@@ -119,7 +121,7 @@ module.exports = {
 
             const cekslug = await Produk.findOne({ where: { slug: slug } });
 
-            if (cekslug) return req.json({ msg: `Nama produk telah digunakan` });
+            if (cekslug) return res.json({ status: 409, msg: `Nama produk telah digunakan` });
 
             await Produk.create({
                 nama_produk: nama_produk,
@@ -132,6 +134,7 @@ module.exports = {
 
             return res.json({ status: 201, msg: `Created` });
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ msg: `Invalid` });
         }
     },
@@ -196,7 +199,7 @@ module.exports = {
                 desc: desc,
                 harga: harga,
                 image: image,
-                slug: slug
+                slug: newSlug
             }, { where: { slug: slug } }
             );
 
