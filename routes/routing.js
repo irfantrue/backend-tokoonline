@@ -87,13 +87,13 @@ router
     .delete(verifytoken, batal_transaksi);
 
 // ROUTE PEMBAYARAN USER
-router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
+// router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
 
 // ROUTE UPDATE IMAGE PEMBAYARAN
-router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
+// router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
 
 // ROUTE PEMBAYARAN ADMIN
-router.get(`/pembayaran`, verifytoken, get_pembeyaran_all);
+// router.get(`/pembayaran`, verifytoken, get_pembeyaran_all);
 
 // ROUTE KATEGORI
 router
