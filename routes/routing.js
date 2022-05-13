@@ -74,11 +74,7 @@ router.put(`/cart/tambah-jumlah/:id`, verifytoken, tambah_jumlah_produk);
 router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 
 // ROUTE TRANSAKSI
-router
-    .route(`/transaksi-user`)
-    .get(verifytoken, get_produk_transaksi)
-    // ROUTE UPDATE IMAGE PEMBAYARAN
-    .put(verifytoken, update_pembayaran_user);
+router.get(`/transaksi-user`,verifytoken, get_produk_transaksi);
 
 // ROUTE GET ALL TRANSAKSI DATA (ADMIN)
 router.get(`/transaksi`, verifytoken, get_all_transaksi_user);
@@ -92,6 +88,9 @@ router
 
 // ROUTE PEMBAYARAN USER
 router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
+
+// ROUTE UPDATE IMAGE PEMBAYARAN
+router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
 
 // ROUTE PEMBAYARAN ADMIN
 router.get(`/pembayaran`, verifytoken, get_pembeyaran_all);
