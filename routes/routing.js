@@ -40,6 +40,7 @@ const {
 } = require(`../controller/transaksi`);
 const {
     get_pembayaran_user,
+    update_pembayaran_user,
     get_pembeyaran_all
 } = require(`../controller/pembayaran`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
@@ -73,7 +74,11 @@ router.put(`/cart/tambah-jumlah/:id`, verifytoken, tambah_jumlah_produk);
 router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 
 // ROUTE TRANSAKSI
-router.get(`/transaksi-user`, verifytoken, get_produk_transaksi);
+router
+    .route(`/transaksi-user`)
+    .get(verifytoken, get_produk_transaksi)
+    // ROUTE UPDATE IMAGE PEMBAYARAN
+    .put(verifytoken, update_pembayaran_user);
 
 // ROUTE GET ALL TRANSAKSI DATA (ADMIN)
 router.get(`/transaksi`, verifytoken, get_all_transaksi_user);

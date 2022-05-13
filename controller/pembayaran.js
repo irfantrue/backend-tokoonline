@@ -35,6 +35,40 @@ module.exports = {
         }
     },
 
+    update_pembayaran_user: async (req, res) => {
+        try {
+            const {
+                image
+            } = req.body;
+
+            const schema = {
+                image: `string|empty:false`
+            };
+
+            const check = v.compile(schema);
+
+            const result = check({
+                image: image
+            });
+
+            if (result != true) return res.json({ status: 400, msg: result });
+
+            const {id} = req.params;
+
+            const pembayaran = await Pembayaran.findByPk(id);
+
+            if (!pembayaran) return res.json({ status: 404, msg: `Data Not Found` });
+
+            await pembayaran.update({
+                image: image
+            });
+
+            return res.json({ status: 200, msg: `Berhasil update` });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
     get_pembeyaran_all: async (req, res) => {
         try {
             const pembayaran = await Pembayaran.findAll();
