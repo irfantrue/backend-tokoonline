@@ -26,7 +26,7 @@ module.exports = {
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
-                    no_rek: 1660194084
+                    no_rek: 1660194083
                 }
             });
 
