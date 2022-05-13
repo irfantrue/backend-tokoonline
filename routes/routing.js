@@ -38,6 +38,10 @@ const {
     get_all_transaksi_user,
     batal_transaksi
 } = require(`../controller/transaksi`);
+const {
+    get_pembayaran_user,
+    get_pembeyaran_all
+} = require(`../controller/pembayaran`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
@@ -64,9 +68,9 @@ router.get(`/cart`, verifytoken, get_all_cart);
 router.post(`/cart/checkout`, verifytoken, checkout);
 
 // ROUTE TAMBAH/KURANG JUMLAH PRODUK KERANJANG
-router.put(`/cart/tambah-jumlah/:slug`, verifytoken, tambah_jumlah_produk);
+router.put(`/cart/tambah-jumlah/:id`, verifytoken, tambah_jumlah_produk);
 
-router.put(`/cart/kurang-jumlah/:slug`, verifytoken, kurang_jumlah_produk);
+router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 
 // ROUTE TRANSAKSI
 router.get(`/transaksi-user`, verifytoken, get_produk_transaksi);
@@ -80,6 +84,12 @@ router
     .put(verifytoken, update_status_transaksi)
     // ROUTE BATAL TRANSAKSI / ORDER (User)
     .delete(verifytoken, batal_transaksi);
+
+// ROUTE PEMBAYARAN USER
+router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
+
+// ROUTE PEMBAYARAN ADMIN
+router.get(`/pembayaran`, verifytoken, get_pembeyaran_all);
 
 // ROUTE KATEGORI
 router

@@ -1,6 +1,7 @@
 const Validator = require(`fastest-validator`);
 const Users = require(`../models/userdb`);
 const Keranjang = require('../models/keranjang');
+const Pembayaran = require(`../models/pembayaran`);
 const v = new Validator();
 const jwt_decode = require(`jwt-decode`);
 const Transaksi = require('../models/transaksi');
@@ -24,21 +25,20 @@ module.exports = {
 
             let produk = keranjang.map((obj) => {
                 return {
+                    id: obj.id,
+                    id_produk: obj.id_produk,
                     image: obj.image,
                     jumlah: obj.jumlah,
-                    harga: obj.harga
+                    harga: obj.harga,
+                    total_harga: obj.harga * obj.jumlah
                 }
             });
 
-            let list_produk = [];
-
-            for (let i = 0; i < keranjang.length; i++) {
-                let a = await Produk.findByPk(keranjang[i].id_produk);
+            for (let i = 0; i < produk.length; i++) {
+                let a = await Produk.findByPk(produk[i].id_produk);
                 
                 // Menambahkan data nama produk
                 produk[i].nama_produk = a.nama_produk;
-
-                list_produk.push(a);
             };
 
             let array_total_harga = [];
@@ -56,7 +56,7 @@ module.exports = {
             };
 
             let result = {
-                list_produk,
+                produk,
                 total
             }
 
@@ -69,12 +69,12 @@ module.exports = {
     tambah_jumlah_produk: async (req, res) => {
         try {
             const {
-                slug
+                id
             } = req.params;
 
             let jumlah = 1;
 
-            const tambah = await Keranjang.findOne({ where: { slug: slug } });
+            const tambah = await Keranjang.findOne({ where: { id: id } });
 
             if (!tambah) return res.json({ status: 404, msg: `Data Not Found` });
 
@@ -91,12 +91,12 @@ module.exports = {
     kurang_jumlah_produk: async (req, res) => {
         try {
             const {
-                slug
+                id
             } = req.params;
 
             let jumlah = 1;
 
-            const kurang = await Keranjang.findOne({ where: { slug: slug } });
+            const kurang = await Keranjang.findOne({ where: { id: id } });
 
             if (!kurang) return res.json({ status: 404, msg: `Data Not Found` });
 
@@ -147,10 +147,50 @@ module.exports = {
 
             if (result != true) return res.json({ status: 400, msg: result });
 
+            let array_total_harga = [];
+
+            for (let i = 0; i < data_keranjang.length; i++) {
+                let a = data_keranjang[i].jumlah * data_keranjang[i].harga;
+
+                array_total_harga.push(a);
+            };
+
+            let total = 0;
+
+            for (let i = 0; i < array_total_harga.length; i++) {
+                total = total + array_total_harga[i];
+            };
+
+            if (total == 0) return res.json({ msg: `Tidak ada produk yang dibeli` });
+
+            let pembayaran_user = 0;
+
+            let deskripsi = [];
+
+            for (let i = 0; i < data_keranjang.length; i++) {
+                let a = await Produk.findByPk(data_keranjang[i].id_produk);
+
+                let b = `${a.nama_produk} x ${data_keranjang[i].jumlah}`;
+
+                deskripsi.push(b);
+            };
+
+            deskripsi = deskripsi.toString();
+
+            if (pembayaran == `BCA Transfer`) {
+                pembayaran_user = await Pembayaran.create({
+                    id_user: user.id,
+                    image: null,
+                    desc: deskripsi,
+                    total_harga: total
+                });
+            };
+
             for (let i = 0; i < data_keranjang.length; i++) {
                 await Transaksi.create({
                     id_produk: data_keranjang[i].id_produk,
                     id_user: data_keranjang[i].id_user,
+                    id_pembayaran: pembayaran_user.id,
                     image: data_keranjang[i].image,
                     alamat_user: user.address,
                     alamat_tujuan: alamat_tujuan,

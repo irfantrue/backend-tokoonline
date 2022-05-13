@@ -10,6 +10,9 @@ const Transaksi = db.define(`transaksi`,{
     id_user:{
         type: DataTypes.INTEGER
     },
+    id_pembayaran:{
+        type: DataTypes.INTEGER
+    },
     image:{
         type: DataTypes.STRING
     },
