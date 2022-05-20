@@ -4,7 +4,8 @@ const {
     login, 
     signup 
 } = require(`../controller/loginregis`);
-const { 
+const {
+    search_product_by_kategori, 
     get_all_kategori, 
     add_kategori, 
     update_kategori, 
@@ -63,6 +64,12 @@ router.get(`/identitas-navbar`, identitas_navbar);
 
 // ROUTE HOME
 router.get(`/home-produk`, home);
+
+// ROUTE HOME GET ALL CATEGORY
+router.get(`/kategori-home`, get_all_kategori);
+
+// ROUTE HOME SEARCH PRODUCT BY CATEGORY
+router.get(`/home-produk/:slug`, search_product_by_kategori);
 
 // ROUTE ADD CART
 router.post(`/add-produk/:slug`, verifytoken, add_cart);

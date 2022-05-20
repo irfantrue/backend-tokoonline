@@ -5,6 +5,25 @@ const v = new Validator();
 
 module.exports = {
 
+    search_product_by_kategori: async (req, res) => {
+        try {
+            const { slug } = req.params;
+
+            const kategori = await Kategori.findOne({ where:{ slug: slug } });
+
+            if (!kategori) return res.json({ status: 404, msg: `Data Not Found` });
+
+            const produk = await Produk.findAll({ where:{ id_kategori: kategori.id } })
+
+            if (!produk) return res.json({ status: 404, msg: `Data Not Found` });
+
+            return res.json({ status: 200, msg: produk });
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
     get_all_kategori: async (req, res) => {
         try {
             const kategori = await Kategori.findAll();
@@ -33,14 +52,19 @@ module.exports = {
 
             if (result != true) return res.json({ status: 400, msg: result });
 
-            const kategori = await Kategori.findOne({
-                where:{ nama_kategori: nama_kategori }
-            });
+            let slug = String(nama_kategori)
+                .toLowerCase()
+                .replace(/ +/g, `-`)
+                .replace(/[^\w-]+/g, ``)
+                .replace(/[_]+|[_-]+$/g, ``);
 
-            if (kategori) return res.json({ msg: `Nama kategori sudah digunakan` });
+            const cekslug = await Kategori.findOne({ where: { slug: slug } });
+
+            if (cekslug) return res.json({ status: 409, msg: `Nama kategori telah digunakan` });
 
             await Kategori.create({
-                nama_kategori: nama_kategori
+                nama_kategori: nama_kategori,
+                slug: slug
             });
 
             return res.json({ status: 201, msg: `Created` });
@@ -71,13 +95,23 @@ module.exports = {
 
             if (!kategori) return res.json({ status: 404, msg: `Data Not Found` });
 
-            const oldKategori = await Kategori.findOne({
-                where:{ nama_kategori: nama_kategori }
-            });
+            let newSlug = String(nama_kategori)
+                .toLowerCase()
+                .replace(/ +/g, `-`)
+                .replace(/[^\w-]+/g, ``)
+                .replace(/[_]+|[_-]+$/g, ``);
+            
+            if (kategori.slug != newSlug) {
+                // CHANGE SLUG (Jika merubah nama produk)
+                const oldKategori = await Kategori.findOne({ where: { slug: newSlug } });
 
-            if (oldKategori) return res.json({ msg: `Nama kategori sudah ada` });
+                if (oldKategori) return res.json({ msg: `Nama kategori telah digunakan` });
+            }
 
-            await Kategori.update({ nama_kategori: nama_kategori }, {
+            await Kategori.update({ 
+                nama_kategori: nama_kategori,
+                slug: newSlug
+            }, {
                 where:{ id:id }
             });
 
