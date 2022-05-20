@@ -70,7 +70,7 @@ module.exports = {
         }
     },
 
-    get_pembeyaran_all: async (req, res) => {
+    get_pembayaran_all: async (req, res) => {
         try {
             const pembayaran = await Pembayaran.findAll();
 
@@ -92,6 +92,42 @@ module.exports = {
             };
 
             return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    update_status_pembayaran: async (req, res) => {
+        try {
+            const {
+                status
+            } = req.body;
+
+            const schema = {
+                status: `string|empty:false`,
+            }
+
+            const check = v.compile(schema);
+
+            const result = check({
+                status: status
+            });
+
+            if (result != true) return res.json({ status: 400, msg: result });
+
+            const { id } = req.params;
+
+            const pembayaran = await Pembayaran.findByPk(id);
+
+            if (!pembayaran) return res.json({ status: 404, msg: `Data Not Found` });
+
+            await Pembayaran.update(
+                {
+                    status: status
+                }, { where: { id: id } }
+            );
+
+            return res.json({ status: 200, msg: `Berhasil update data` });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

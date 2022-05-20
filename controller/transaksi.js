@@ -111,6 +111,7 @@ module.exports = {
             let produk = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    id_user: obj.id_user,
                     image: obj.image,
                     alamat_user: obj.alamat_user,
                     alamat_tujuan: obj.alamat_tujuan,

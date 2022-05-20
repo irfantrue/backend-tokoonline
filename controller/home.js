@@ -14,7 +14,7 @@ module.exports = {
             const new_produk = await db.query(
                 "SELECT a.createdAt, a.nama_produk, a.harga, a.slug, a.image, b.nama_kategori FROM tokoonline.produk AS a INNER JOIN tokoonline.kategori AS b ON a.id_kategori = b.id ORDER BY a.createdAt DESC", 
                 { type: QueryTypes.SELECT });
-
+            
             let result = {
                 new_produk
             };

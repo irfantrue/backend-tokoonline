@@ -13,6 +13,9 @@ const Pembayaran = db.define(`pembayaran`, {
     desc:{
         type: DataTypes.STRING
     },
+    status:{
+        type: DataTypes.STRING
+    },
     total_harga:{
         type: DataTypes.INTEGER
     },

@@ -36,6 +36,9 @@ module.exports = {
 
             for (let i = 0; i < produk.length; i++) {
                 let a = await Produk.findByPk(produk[i].id_produk);
+
+                // Menambahkan data nama slug
+                produk[i].slug = a.slug;
                 
                 // Menambahkan data nama produk
                 produk[i].nama_produk = a.nama_produk;

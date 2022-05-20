@@ -41,17 +41,25 @@ const {
 const {
     get_pembayaran_user,
     update_pembayaran_user,
-    get_pembeyaran_all
+    get_pembayaran_all,
+    update_status_pembayaran
 } = require(`../controller/pembayaran`);
+const {
+    identitas_navbar
+} = require(`../controller/navbar`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
+const verifyTokenAdmin = require(`../middleware/verifyTokenAdmin`);
 
 // ROUTE LOGIN
 router.post(`/login`, login);
 
 // ROUTE REGISTER
 router.post(`/signup`, signup);
+
+// ROUTE IDENTITAS NAVBAR
+router.get(`/identitas-navbar`, identitas_navbar);
 
 // ROUTE HOME
 router.get(`/home-produk`, home);
@@ -77,38 +85,41 @@ router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 router.get(`/transaksi-user`,verifytoken, get_produk_transaksi);
 
 // ROUTE GET ALL TRANSAKSI DATA (ADMIN)
-router.get(`/transaksi`, verifytoken, get_all_transaksi_user);
+router.get(`/transaksi`, verifyTokenAdmin, get_all_transaksi_user);
 
 router
     .route(`/transaksi/:id`)
     // ROUTE UPDATE STATUS TRANSAKSI (ADMIN)
-    .put(verifytoken, update_status_transaksi)
+    .put(verifyTokenAdmin, update_status_transaksi)
     // ROUTE BATAL TRANSAKSI / ORDER (User)
     .delete(verifytoken, batal_transaksi);
 
 // ROUTE PEMBAYARAN USER
-// router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
+router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
 
 // ROUTE UPDATE IMAGE PEMBAYARAN
-// router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
+router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
 
 // ROUTE PEMBAYARAN ADMIN
-// router.get(`/pembayaran`, verifytoken, get_pembeyaran_all);
+router.get(`/pembayaran`, verifyTokenAdmin, get_pembayaran_all);
+
+// ROUTE UPDATE STATUS PEMBAYARAN BY ADMIN
+router.put(`/pembayaran/:id`, verifyTokenAdmin, update_status_pembayaran);
 
 // ROUTE KATEGORI
 router
     .route(`/kategori`)
     // GET KATEGORI
-    .get(verifytoken, get_all_kategori)
+    .get(verifyTokenAdmin, get_all_kategori)
     // ADD KATEGORI
-    .post(verifytoken, add_kategori);
+    .post(verifyTokenAdmin, add_kategori);
 
 router
     .route(`/kategori/:id`)
     // UPDATE KATEGORI
-    .put(verifytoken, update_kategori)
+    .put(verifyTokenAdmin, update_kategori)
     // DELETE KATEGORI
-    .delete(verifytoken, delete_kategori);
+    .delete(verifyTokenAdmin, delete_kategori);
 
 // ROUTE UPLOAD IMAGE
 router.post(`/upload-image`, verifytoken, imageupload, fileSizeLimitErrorHandler, upload_image);
@@ -120,17 +131,17 @@ router.post(`/delete-image`, verifytoken, delete_image);
 router
     .route(`/produk`)
     // ADD PRODUK
-    .post(verifytoken, add_produk)
+    .post(verifyTokenAdmin, add_produk)
     // GET ALL PRODUK
-    .get(verifytoken, get_all_produk);
+    .get(verifyTokenAdmin, get_all_produk);
 
 router
     .route(`/produk/:slug`)
     // DETAIL PRODUK
     .get(detail_produk)
     // UPDATE PRODUK
-    .put(verifytoken, update_produk)
+    .put(verifyTokenAdmin, update_produk)
     // DELETE PRODUK
-    .delete(verifytoken, delete_produk);
+    .delete(verifyTokenAdmin, delete_produk);
     
 module.exports = router;
