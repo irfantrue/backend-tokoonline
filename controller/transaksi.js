@@ -48,6 +48,22 @@ module.exports = {
         }
     },
 
+    delete_transaksi: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const transaksi = await Transaksi.findByPk(id);
+
+            if (!transaksi) return res.json({ status: 404, msg: `Transaksi item tidak ditemukan` });
+
+            await transaksi.destroy();
+
+            return res.json({ status: 200, msg: `Berhasil hapus order` });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
     batal_transaksi: async (req, res) => {
         try {
             const authHeader = req.headers[`authorization`];

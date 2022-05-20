@@ -37,12 +37,14 @@ const {
     get_produk_transaksi,
     update_status_transaksi,
     get_all_transaksi_user,
+    delete_transaksi,
     batal_transaksi
 } = require(`../controller/transaksi`);
 const {
     get_pembayaran_user,
     update_pembayaran_user,
     get_pembayaran_all,
+    detail_pembayaran,
     update_status_pembayaran
 } = require(`../controller/pembayaran`);
 const {
@@ -88,8 +90,11 @@ router.put(`/cart/tambah-jumlah/:id`, verifytoken, tambah_jumlah_produk);
 
 router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 
-// ROUTE TRANSAKSI
+// ROUTE TRANSAKSI (USER)
 router.get(`/transaksi-user`,verifytoken, get_produk_transaksi);
+
+// ROUTE BATAL TRANSAKSI / ORDER (USER)
+router.delete(`/transaksi-user`, verifytoken, batal_transaksi);
 
 // ROUTE GET ALL TRANSAKSI DATA (ADMIN)
 router.get(`/transaksi`, verifyTokenAdmin, get_all_transaksi_user);
@@ -98,8 +103,8 @@ router
     .route(`/transaksi/:id`)
     // ROUTE UPDATE STATUS TRANSAKSI (ADMIN)
     .put(verifyTokenAdmin, update_status_transaksi)
-    // ROUTE BATAL TRANSAKSI / ORDER (User)
-    .delete(verifytoken, batal_transaksi);
+    // ROUTE BATAL TRANSAKSI / ORDER (ADMIN)
+    .delete(verifyTokenAdmin, delete_transaksi);
 
 // ROUTE PEMBAYARAN USER
 router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
@@ -111,7 +116,10 @@ router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
 router.get(`/pembayaran`, verifyTokenAdmin, get_pembayaran_all);
 
 // ROUTE UPDATE STATUS PEMBAYARAN BY ADMIN
-router.put(`/pembayaran/:id`, verifyTokenAdmin, update_status_pembayaran);
+router
+    .route(`/pembayaran/:id`)
+    .get(verifyTokenAdmin, detail_pembayaran)
+    .put(verifyTokenAdmin, update_status_pembayaran);
 
 // ROUTE KATEGORI
 router

@@ -97,6 +97,29 @@ module.exports = {
         }
     },
 
+    detail_pembayaran: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const pembayaran = await Pembayaran.findByPk(id);
+
+            if (!pembayaran) return res.json({ status: 404, msg: `Data Not Found` });
+
+            const user = await Users.findByPk(pembayaran.id_user);
+
+            let result = {
+                image: pembayaran.image,
+                fullname: user.fullname,
+                status: pembayaran.status,
+                total_harga: pembayaran.total_harga
+            };
+
+            return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
     update_status_pembayaran: async (req, res) => {
         try {
             const {
