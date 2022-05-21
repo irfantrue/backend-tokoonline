@@ -28,7 +28,7 @@ module.exports = {
         try {
             const kategori = await Kategori.findAll();
 
-            if (kategori.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
+            // if (kategori.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
             return res.json({ status: 200, msg: `OK`, data: kategori });
         } catch (error) {

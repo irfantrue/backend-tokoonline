@@ -12,7 +12,7 @@ module.exports = {
         try {
             const produk = await Produk.findAll();
 
-            if (produk.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
+            // if (produk.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
             let result = produk.map((obj) => {
                 return {

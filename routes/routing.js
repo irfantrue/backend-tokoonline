@@ -94,17 +94,17 @@ router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 router.get(`/transaksi-user`,verifytoken, get_produk_transaksi);
 
 // ROUTE BATAL TRANSAKSI / ORDER (USER)
-router.delete(`/transaksi-user`, verifytoken, batal_transaksi);
+router.delete(`/transaksi-user/:id`, verifytoken, batal_transaksi);
 
 // ROUTE GET ALL TRANSAKSI DATA (ADMIN)
-router.get(`/transaksi`, verifyTokenAdmin, get_all_transaksi_user);
+router.get(`/transaksi`,verifytoken, get_all_transaksi_user);
 
 router
     .route(`/transaksi/:id`)
     // ROUTE UPDATE STATUS TRANSAKSI (ADMIN)
-    .put(verifyTokenAdmin, update_status_transaksi)
+    .put(verifytoken, update_status_transaksi)
     // ROUTE BATAL TRANSAKSI / ORDER (ADMIN)
-    .delete(verifyTokenAdmin, delete_transaksi);
+    .delete(verifytoken, delete_transaksi);
 
 // ROUTE PEMBAYARAN USER
 router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
@@ -113,28 +113,28 @@ router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
 router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);
 
 // ROUTE PEMBAYARAN ADMIN
-router.get(`/pembayaran`, verifyTokenAdmin, get_pembayaran_all);
+router.get(`/pembayaran`, verifytoken, get_pembayaran_all);
 
 // ROUTE UPDATE STATUS PEMBAYARAN BY ADMIN
 router
     .route(`/pembayaran/:id`)
-    .get(verifyTokenAdmin, detail_pembayaran)
-    .put(verifyTokenAdmin, update_status_pembayaran);
+    .get(verifytoken, detail_pembayaran)
+    .put(verifytoken, update_status_pembayaran);
 
 // ROUTE KATEGORI
 router
     .route(`/kategori`)
     // GET KATEGORI
-    .get(verifyTokenAdmin, get_all_kategori)
+    .get(verifytoken, get_all_kategori)
     // ADD KATEGORI
-    .post(verifyTokenAdmin, add_kategori);
+    .post(verifytoken, add_kategori);
 
 router
     .route(`/kategori/:id`)
     // UPDATE KATEGORI
-    .put(verifyTokenAdmin, update_kategori)
+    .put(verifytoken, update_kategori)
     // DELETE KATEGORI
-    .delete(verifyTokenAdmin, delete_kategori);
+    .delete(verifytoken, delete_kategori);
 
 // ROUTE UPLOAD IMAGE
 router.post(`/upload-image`, verifytoken, imageupload, fileSizeLimitErrorHandler, upload_image);
@@ -146,17 +146,17 @@ router.post(`/delete-image`, verifytoken, delete_image);
 router
     .route(`/produk`)
     // ADD PRODUK
-    .post(verifyTokenAdmin, add_produk)
+    .post(verifytoken, add_produk)
     // GET ALL PRODUK
-    .get(verifyTokenAdmin, get_all_produk);
+    .get(verifytoken, get_all_produk);
 
 router
     .route(`/produk/:slug`)
     // DETAIL PRODUK
     .get(detail_produk)
     // UPDATE PRODUK
-    .put(verifyTokenAdmin, update_produk)
+    .put(verifytoken, update_produk)
     // DELETE PRODUK
-    .delete(verifyTokenAdmin, delete_produk);
+    .delete(verifytoken, delete_produk);
     
 module.exports = router;

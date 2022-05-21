@@ -122,7 +122,7 @@ module.exports = {
         try {
             const transaksi = await Transaksi.findAll();
 
-            if (transaksi.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
+            // if (transaksi.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
             let produk = transaksi.map((obj) => {
                 return {
