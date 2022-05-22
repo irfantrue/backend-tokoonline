@@ -4,7 +4,7 @@ const imagestorage = require(`./imagestorage`);
 module.exports = multer({
     storage: imagestorage,
     limits: {
-        fileSize: 1000000,
+        fileSize: 10000000,
     },
     fileFilter(req, file, cb) {
         if (!file.originalname.match(/\.(png|jpg|PNG|JPG)$/)) {

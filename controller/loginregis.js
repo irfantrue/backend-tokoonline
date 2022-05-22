@@ -22,7 +22,7 @@ module.exports = {
                 password: password
             });
 
-            if (result != true) return res.json({ status: 400, msg:[result] });
+            if (result != true) return res.json({ status: 400, msg: result });
 
             const users = await Users.findOne({ where:{ email: email } })
 
