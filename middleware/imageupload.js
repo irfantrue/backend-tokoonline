@@ -8,7 +8,7 @@ module.exports = multer({
     },
     fileFilter(req, file, cb) {
         if (!file.originalname.match(/\.(png|jpg|PNG|JPG)$/)) {
-            return cb(new Error(`Please upload a Image`));
+            return cb(new Error(`Ekstensi gambar (png/jpg/PNG/JPG)`));
         }
         cb(undefined, true);
     }

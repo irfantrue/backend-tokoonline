@@ -25,6 +25,7 @@ module.exports = {
                     id: obj.id,
                     desc: obj.desc,
                     image: obj.image,
+                    status: obj.status,
                     total_harga: obj.total_harga,
                     no_rek: `16601940xx`
                 }
@@ -81,7 +82,8 @@ module.exports = {
                     id: obj.id,
                     desc: obj.desc,
                     image: obj.image,
-                    total_harga: obj.total_harga
+                    total_harga: obj.total_harga,
+                    status: obj.status
                 }
             });
 
@@ -136,7 +138,7 @@ module.exports = {
                 status: status
             });
 
-            if (result != true) return res.json({ status: 400, msg: result });
+            if (result != true) return res.json({ status: 400, msg: `Bad Request` });
 
             const { id } = req.params;
 

@@ -30,7 +30,7 @@ module.exports = {
 
             const original = Crypto.AES.decrypt(users.password, process.env.KEY_CRYPTO).toString(Crypto.enc.Utf8);
 
-            if (original != password) return res.json({ status: 401, msg: `Username / password salah`});
+            if (original != password) return res.json({ status: 401, msg: `Email / password salah`});
 
             let payload = { 
                 fullname: users.fullname, 

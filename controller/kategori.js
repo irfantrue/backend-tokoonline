@@ -67,7 +67,7 @@ module.exports = {
                 slug: slug
             });
 
-            return res.json({ status: 201, msg: `Created` });
+            return res.json({ status: 201, msg: `Berhasil tambah data` });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }
@@ -87,7 +87,7 @@ module.exports = {
                 nama_kategori:nama_kategori
             });
 
-            if (result != true) return res.json({ status: 400, msg: `Bad Request`, data: result });
+            if (result != true) return res.json({ status: 400, msg: result });
 
             const {id} = req.params;
 
@@ -105,7 +105,7 @@ module.exports = {
                 // CHANGE SLUG (Jika merubah nama produk)
                 const oldKategori = await Kategori.findOne({ where: { slug: newSlug } });
 
-                if (oldKategori) return res.json({ msg: `Nama kategori telah digunakan` });
+                if (oldKategori) return res.json({ status: 409, msg: `Nama kategori telah digunakan` });
             }
 
             await Kategori.update({ 
@@ -115,7 +115,7 @@ module.exports = {
                 where:{ id:id }
             });
 
-            return res.json({ status: 200, msg: `Berhasil update data`, data:{ id: kategori.id, nama_kategori: nama_kategori } });
+            return res.json({ status: 200, msg: `Berhasil update data` });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

@@ -25,7 +25,7 @@ module.exports = {
             let produk = transaksi.map((obj) => {
                 return {
                     id: obj.id,
-                    image: obj.image,
+                    // image: obj.image,
                     alamat_tujuan: obj.alamat_tujuan,
                     pembayaran: obj.pembayaran,
                     jumlah: obj.jumlah,
@@ -37,6 +37,9 @@ module.exports = {
 
             for (let i = 0; i < transaksi.length; i++) {
                 let a = await Produk.findByPk(transaksi[i].id_produk);
+
+                // Menambahkan data image produk
+                produk[i].image = a.image
                 
                 // Menambahkan data nama produk
                 produk[i].nama_produk = a.nama_produk;
@@ -80,27 +83,27 @@ module.exports = {
 
             if (!transaksi) return res.json({ status: 404, msg: `Transaksi item tidak ditemukan` });
 
-            if (transaksi.status == `selesai` || transaksi.status == `pengiriman`) return res.json({ msg: `Transaksi tidak bisa dibatalkan` });
-
+            if (transaksi.status != `Menunggu Konfirmasi`) return res.json({ status: 400, msg: `Transaksi tidak bisa dibatalkan` });
+            
             await transaksi.destroy();
 
             if (transaksi.pembayaran == `BCA Transfer`) {
                 let data_pembayaran = await Pembayaran.findByPk(transaksi.id_pembayaran);
-
+                
                 let data_transaksi = await Transaksi.findAll({ where:{ id_user: user.id, id_pembayaran: transaksi.id_pembayaran } });
-
+                
                 let deskripsi = [];
-
+                
                 for (let i = 0; i < data_transaksi.length; i++) {
                     let a = await Produk.findByPk(data_transaksi[i].id_produk);
-
+                    
                     let b = `${a.nama_produk} x ${data_transaksi[i].jumlah}`;
-
+                    
                     deskripsi.push(b);
                 };
-
-                deskripsi = deskripsi.toString();
-
+                
+                deskripsi = deskripsi.toString().replace(/,+/g, `, `);
+                
                 await data_pembayaran.update({
                     desc: deskripsi,
                     total_harga: data_pembayaran.total_harga - transaksi.total_harga
@@ -109,7 +112,9 @@ module.exports = {
 
             let x = await Pembayaran.findByPk(transaksi.id_pembayaran);
             
-            if (x.total_harga == 0) await x.destroy();
+            if (x != null) {
+                if (x.total_harga == 0) await x.destroy();
+            }
 
             return res.json({ status: 200, msg: `Berhasil batal order` });
         } catch (error) {
@@ -128,7 +133,7 @@ module.exports = {
                 return {
                     id: obj.id,
                     id_user: obj.id_user,
-                    image: obj.image,
+                    // image: obj.image,
                     alamat_user: obj.alamat_user,
                     alamat_tujuan: obj.alamat_tujuan,
                     pembayaran: obj.pembayaran,
@@ -141,11 +146,16 @@ module.exports = {
 
             for (let i = 0; i < transaksi.length; i++) {
                 let a = await Users.findByPk(transaksi[i].id_user);
-
+                let b = await Produk.findByPk(transaksi[i].id_produk);
+                
+                // Menambahkan data image produk
+                produk[i].image = b.image;
+                
+                // Menambahkan data email user
                 produk[i].email = a.email;
-            }
-
-            return res.json({ status: 200, msg: `OK`, data: produk });
+            };
+            
+            return res.json({ status: 200, msg: `OK`, data: produk});
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

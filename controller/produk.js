@@ -106,13 +106,13 @@ module.exports = {
                 harga: harga,
                 image: image
             });
-
+            
             if (result != true) return res.json({ status: 400, msg: result });
 
             const kategori = await Kategori.findByPk(id_kategori);
-
-            if (!kategori) return res.json({ status: 400, msg: `Bad Request` });
-
+            
+            if (!kategori) return res.json({ status: 404, msg: `Kategori Tidak ditemukan` });
+            
             let slug = String(nama_produk)
                 .toLowerCase()
                 .replace(/ +/g, `-`)
@@ -171,7 +171,7 @@ module.exports = {
 
             const kategori = await Kategori.findByPk(id_kategori);
 
-            if (!kategori) return res.json({ status: 400, msg: `Bad Request` });
+            if (!kategori) return res.json({ status: 400, msg: `Kategori tidak ditemukan` });
 
             const { slug } = req.params;
 
@@ -189,7 +189,7 @@ module.exports = {
                 // CHANGE SLUG (Jika merubah nama produk)
                 const oldProduk = await Produk.findOne({ where: { slug: newSlug } });
 
-                if (oldProduk) return res.json({ msg: `Nama produk telah digunakan` });
+                if (oldProduk) return res.json({ status: 409, msg: `Nama produk telah digunakan` });
             }
 
             await Produk.update(

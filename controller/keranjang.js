@@ -6,6 +6,7 @@ const v = new Validator();
 const jwt_decode = require(`jwt-decode`);
 const Transaksi = require('../models/transaksi');
 const Produk = require(`../models/produk`);
+const transaksi = require('./transaksi');
 
 module.exports = {
 
@@ -27,7 +28,7 @@ module.exports = {
                 return {
                     id: obj.id,
                     id_produk: obj.id_produk,
-                    image: obj.image,
+                    // image: obj.image,
                     jumlah: obj.jumlah,
                     harga: obj.harga,
                     total_harga: obj.harga * obj.jumlah
@@ -36,6 +37,9 @@ module.exports = {
 
             for (let i = 0; i < produk.length; i++) {
                 let a = await Produk.findByPk(produk[i].id_produk);
+
+                // Menambahkan data image
+                produk[i].image = a.image;
 
                 // Menambahkan data nama slug
                 produk[i].slug = a.slug;
@@ -119,7 +123,8 @@ module.exports = {
         try {
             const {
                 alamat_tujuan,
-                pembayaran
+                pembayaran,
+                tanggalJadiPesanan
             } = req.body;
 
             const authHeader = req.headers[`authorization`];
@@ -136,7 +141,15 @@ module.exports = {
                 id_user: `number|empty:false`,
                 alamat_user: `string|empty:false`,
                 alamat_tujuan: `string|empty:false`,
+                tanggalJadiPesanan: `string|empty:false`,
                 pembayaran: `string|empty:false`,
+                produk: {
+                    type: `array`,
+                    min: 1,
+                    items: {
+                        type: `object`,
+                    }
+                }
             };
 
             const check = v.compile(schema);
@@ -144,8 +157,10 @@ module.exports = {
             const result = check({
                 id_user: user.id,
                 alamat_user: user.address,
+                tanggalJadiPesanan: tanggalJadiPesanan,
                 alamat_tujuan: alamat_tujuan,
                 pembayaran: pembayaran,
+                produk: data_keranjang
             });
 
             if (result != true) return res.json({ status: 400, msg: result });
@@ -164,7 +179,7 @@ module.exports = {
                 total = total + array_total_harga[i];
             };
 
-            if (total == 0) return res.json({ msg: `Tidak ada produk yang dibeli` });
+            if (total == 0) return res.json({ status: 404, msg: `Tidak ada produk yang dibeli` });
 
             let pembayaran_user = 0;
 
@@ -178,7 +193,7 @@ module.exports = {
                 deskripsi.push(b);
             };
 
-            deskripsi = deskripsi.toString();
+            deskripsi = deskripsi.toString().replace(/,+/g, `, `);
 
             if (pembayaran == `BCA Transfer`) {
                 pembayaran_user = await Pembayaran.create({
@@ -201,13 +216,15 @@ module.exports = {
                     jumlah: data_keranjang[i].jumlah,
                     harga: data_keranjang[i].harga,
                     total_harga: data_keranjang[i].jumlah * data_keranjang[i].harga,
-                    status: "proses",
+                    status: "Menunggu Konfirmasi",
                 });
             };
 
             await Keranjang.destroy({
                 where: { id_user: user.id }
             });
+
+            console.log(tanggalJadiPesanan)
 
             return res.json({ status: 201, msg: `Berhasil melakukan pembelian` });
         } catch (error) {
