@@ -16,9 +16,6 @@ const Keranjang = db.define(`keranjang`,{
     harga:{
         type: DataTypes.INTEGER
     },
-    image:{
-        type: DataTypes.STRING
-    }
 },{
     freezeTableName: true
 });

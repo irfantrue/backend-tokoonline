@@ -25,18 +25,21 @@ module.exports = {
             let produk = transaksi.map((obj) => {
                 return {
                     id: obj.id,
-                    // image: obj.image,
+                    id_produk: obj.id_produk,
                     alamat_tujuan: obj.alamat_tujuan,
                     pembayaran: obj.pembayaran,
                     jumlah: obj.jumlah,
-                    harga: obj.harga,
                     total_harga: obj.total_harga,
+                    tgl_pengiriman: `${obj.tgl_pengiriman.toLocaleDateString()} ${obj.tgl_pengiriman.toLocaleTimeString()}`,
                     status: obj.status
                 }
             });
 
             for (let i = 0; i < transaksi.length; i++) {
                 let a = await Produk.findByPk(transaksi[i].id_produk);
+
+                // Menambahkan harga satuan produk
+                produk[i].harga = a.harga;
 
                 // Menambahkan data image produk
                 produk[i].image = a.image
@@ -129,13 +132,12 @@ module.exports = {
 
             // if (transaksi.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
-            let produk = transaksi.map((obj) => {
+            let result = transaksi.map((obj) => {
                 return {
                     id: obj.id,
                     id_user: obj.id_user,
-                    // image: obj.image,
-                    alamat_user: obj.alamat_user,
                     alamat_tujuan: obj.alamat_tujuan,
+                    tgl_pengiriman: `${obj.tgl_pengiriman.toLocaleDateString()} ${obj.tgl_pengiriman.toLocaleTimeString()}`,
                     pembayaran: obj.pembayaran,
                     jumlah: obj.jumlah,
                     harga: obj.harga,
@@ -149,13 +151,19 @@ module.exports = {
                 let b = await Produk.findByPk(transaksi[i].id_produk);
                 
                 // Menambahkan data image produk
-                produk[i].image = b.image;
+                result[i].nama_produk = b.nama_produk;
+
+                // Menambahkan data phone pelanggan
+                result[i].phone = a.phone;
                 
+                // Menambahkan data alamat original user
+                result[i].alamat_user = a.address;
+
                 // Menambahkan data email user
-                produk[i].email = a.email;
+                result[i].fullname = a.fullname;
             };
-            
-            return res.json({ status: 200, msg: `OK`, data: produk});
+
+            return res.json({ status: 200, msg: `OK`, data: result});
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

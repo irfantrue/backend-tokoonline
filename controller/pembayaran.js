@@ -90,7 +90,9 @@ module.exports = {
             for (let i = 0; i < pembayaran.length; i++) {
                 let a = await Users.findByPk(pembayaran[i].id_user);
 
-                result[i].email = a.email;
+                result[i].email = a.email
+
+                result[i].phone = a.fullname;
             };
 
             return res.json({ status: 200, data: result });

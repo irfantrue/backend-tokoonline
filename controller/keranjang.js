@@ -133,13 +133,14 @@ module.exports = {
 
             let decode = jwt_decode(token);
 
+            console.log(tanggalJadiPesanan);
+
             const user = await Users.findOne({ where: { email: decode.email } });
 
             const data_keranjang = await Keranjang.findAll({ where: { id_user: user.id} });
 
             const schema = {
                 id_user: `number|empty:false`,
-                alamat_user: `string|empty:false`,
                 alamat_tujuan: `string|empty:false`,
                 tanggalJadiPesanan: `string|empty:false`,
                 pembayaran: `string|empty:false`,
@@ -156,7 +157,6 @@ module.exports = {
             
             const result = check({
                 id_user: user.id,
-                alamat_user: user.address,
                 tanggalJadiPesanan: tanggalJadiPesanan,
                 alamat_tujuan: alamat_tujuan,
                 pembayaran: pembayaran,
@@ -209,12 +209,11 @@ module.exports = {
                     id_produk: data_keranjang[i].id_produk,
                     id_user: data_keranjang[i].id_user,
                     id_pembayaran: pembayaran_user.id,
-                    image: data_keranjang[i].image,
-                    alamat_user: user.address,
+                    // image: data_keranjang[i].image,
                     alamat_tujuan: alamat_tujuan,
+                    tgl_pengiriman: tanggalJadiPesanan,
                     pembayaran: pembayaran,
                     jumlah: data_keranjang[i].jumlah,
-                    harga: data_keranjang[i].harga,
                     total_harga: data_keranjang[i].jumlah * data_keranjang[i].harga,
                     status: "Menunggu Konfirmasi",
                 });
@@ -228,6 +227,7 @@ module.exports = {
 
             return res.json({ status: 201, msg: `Berhasil melakukan pembelian` });
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ msg: `Invalid` });
         }
     }

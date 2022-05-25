@@ -52,6 +52,7 @@ module.exports = {
             const {
                 fullname,
                 email,
+                phone,
                 password,
                 address,
                 // level
@@ -59,9 +60,12 @@ module.exports = {
             
             let level = `User`;
 
+            console.log(phone);
+
             const schema = {
                 fullname: "string|empty:false|min:3|max:30",
                 email: "email|empty:false",
+                phone: "string|empty:false|min:9",
                 password: "string|empty:false|min:6|max:30",
                 address: "string|empty:false|min:8",
                 level: "string|empty:false|min:3"
@@ -72,6 +76,7 @@ module.exports = {
             const result = check({
                 fullname:fullname,
                 email:email,
+                phone:phone,
                 password:password,
                 address:address,
                 level:level
@@ -88,6 +93,7 @@ module.exports = {
             await Users.create({
                 fullname: fullname,
                 email: email,
+                phone: phone,
                 password: cipher,
                 address: address,
                 level: level

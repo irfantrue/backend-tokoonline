@@ -50,10 +50,20 @@ const {
 const {
     identitas_navbar
 } = require(`../controller/navbar`);
+const {
+    getDataUser,
+    editDataUser
+} = require(`../controller/profileUser`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
 const verifyTokenAdmin = require(`../middleware/verifyTokenAdmin`);
+
+// ROUTE PROFILE USER
+router
+    .route(`/profile`)
+    .get(verifytoken, getDataUser)
+    .put(verifytoken, editDataUser);
 
 // ROUTE LOGIN
 router.post(`/login`, login);

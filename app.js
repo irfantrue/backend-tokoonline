@@ -17,7 +17,7 @@ const db = require(`./database`);
 try {
   db.authenticate();
   console.log(`Database Connected`);
-  // db.sync(pembayaran);
+  // db.sync(users);
 } catch (error) {
   console.log(error);
 }

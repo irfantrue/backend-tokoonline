@@ -13,22 +13,16 @@ const Transaksi = db.define(`transaksi`,{
     id_pembayaran:{
         type: DataTypes.INTEGER
     },
-    image:{
-        type: DataTypes.STRING
-    },
-    alamat_user:{
-        type: DataTypes.TEXT
-    },
     alamat_tujuan:{
         type: DataTypes.TEXT
+    },
+    tgl_pengiriman:{
+        type: DataTypes.DATE
     },
     pembayaran:{
         type: DataTypes.STRING
     },
     jumlah:{
-        type: DataTypes.INTEGER
-    },
-    harga:{
         type: DataTypes.INTEGER
     },
     total_harga:{
