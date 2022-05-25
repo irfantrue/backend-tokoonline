@@ -11,7 +11,7 @@ const Pembayaran = db.define(`pembayaran`, {
         type: DataTypes.STRING
     },
     desc:{
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
     },
     status:{
         type: DataTypes.STRING
