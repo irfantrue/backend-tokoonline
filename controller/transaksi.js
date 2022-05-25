@@ -18,7 +18,10 @@ module.exports = {
 
             const user = await Users.findOne({ where: { email: decode.email } });
 
-            const transaksi = await Transaksi.findAll({ where: { id_user: user.id } });
+            const transaksi = await Transaksi.findAll({ 
+                where: { id_user: user.id },
+                order: [[`createdAt`, `DESC`]]
+            });
 
             if (transaksi.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
@@ -128,7 +131,7 @@ module.exports = {
     // UNTUK ADMIN DASHBOARD
     get_all_transaksi_user: async (req, res) => {
         try {
-            const transaksi = await Transaksi.findAll();
+            const transaksi = await Transaksi.findAll({ order:[[`createdAt`, `DESC`]] });
 
             // if (transaksi.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 

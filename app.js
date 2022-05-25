@@ -10,14 +10,14 @@ const path = require(`path`);
 // const produk = require(`./models/produk`);
 // const keranjang = require(`./models/keranjang`);
 // const transaksi = require(`./models/transaksi`);
-const pembayaran = require(`./models/pembayaran`);
+// const pembayaran = require(`./models/pembayaran`);
 // DB
 const db = require(`./database`);
 
 try {
   db.authenticate();
   console.log(`Database Connected`);
-  db.sync(pembayaran);
+  // db.sync(pembayaran);
 } catch (error) {
   console.log(error);
 }

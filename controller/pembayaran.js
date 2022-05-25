@@ -16,7 +16,10 @@ module.exports = {
 
             const user = await Users.findOne({ where: { email: decode.email } });
 
-            const pembayaran = await Pembayaran.findAll({ where: { id_user: user.id } });
+            const pembayaran = await Pembayaran.findAll({ 
+                where: { id_user: user.id },
+                order: [[`createdAt`, `DESC`]]
+            });
 
             if (pembayaran.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
@@ -73,7 +76,7 @@ module.exports = {
 
     get_pembayaran_all: async (req, res) => {
         try {
-            const pembayaran = await Pembayaran.findAll();
+            const pembayaran = await Pembayaran.findAll({ order:[[`createdAt`, `DESC`]] });
 
             if (pembayaran.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
