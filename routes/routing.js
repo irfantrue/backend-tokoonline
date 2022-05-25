@@ -34,6 +34,7 @@ const {
     get_all_cart
 } = require(`../controller/keranjang`);
 const {
+    detailTransaksiUser,
     get_produk_transaksi,
     update_status_transaksi,
     get_all_transaksi_user,
@@ -102,6 +103,8 @@ router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 
 // ROUTE TRANSAKSI (USER)
 router.get(`/transaksi-user`,verifytoken, get_produk_transaksi);
+
+router.get(`/transaksi-user/:id`, verifytoken, detailTransaksiUser);
 
 // ROUTE BATAL TRANSAKSI / ORDER (USER)
 router.delete(`/transaksi-user/:id`, verifytoken, batal_transaksi);

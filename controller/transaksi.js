@@ -8,6 +8,40 @@ const Pembayaran = require(`../models/pembayaran`);
 
 module.exports = {
 
+    detailTransaksiUser: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const transaksi = await Transaksi.findByPk(id);
+
+            if (!transaksi) return res.json({ status: 404, msg: `Transaksi item tidak ditemukan` });
+
+            const user = await Users.findByPk(transaksi.id_user);
+
+            const produk = await Produk.findByPk(transaksi.id_produk);
+
+            let result = {
+                nama_user: user.fullname,
+                phone: user.phone,
+                alamat_1: user.address,
+                alamat_2: transaksi.alamat_tujuan,
+                nama_produk: produk.nama_produk,
+                image: produk.image,
+                tgl_pengiriman: `${transaksi.tgl_pengiriman.toLocaleDateString()} ${transaksi.tgl_pengiriman.toLocaleTimeString()}`,
+                pembayaran: transaksi.pembayaran,
+                jumlah: transaksi.jumlah,
+                harga_produk: produk.harga,
+                total_harga: transaksi.total_harga,
+                status: transaksi.status,
+                tgl_pembelian: transaksi.createdAt.toLocaleDateString()
+            };
+
+            return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
     get_produk_transaksi: async (req, res) => {
         try {
             const authHeader = req.headers[`authorization`];
@@ -34,7 +68,8 @@ module.exports = {
                     jumlah: obj.jumlah,
                     total_harga: obj.total_harga,
                     tgl_pengiriman: `${obj.tgl_pengiriman.toLocaleDateString()} ${obj.tgl_pengiriman.toLocaleTimeString()}`,
-                    status: obj.status
+                    status: obj.status,
+                    tgl_pembelian: obj.createdAt.toLocaleDateString()
                 }
             });
 
@@ -139,10 +174,10 @@ module.exports = {
                 return {
                     id: obj.id,
                     id_user: obj.id_user,
-                    alamat_tujuan: obj.alamat_tujuan,
-                    tgl_pengiriman: `${obj.tgl_pengiriman.toLocaleDateString()} ${obj.tgl_pengiriman.toLocaleTimeString()}`,
-                    pembayaran: obj.pembayaran,
                     jumlah: obj.jumlah,
+                    alamat_tujuan: obj.alamat_tujuan,
+                    tgl_pengiriman: obj.tgl_pengiriman.toLocaleDateString(),
+                    pembayaran: obj.pembayaran,
                     harga: obj.harga,
                     total_harga: obj.total_harga,
                     status: obj.status

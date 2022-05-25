@@ -78,7 +78,7 @@ module.exports = {
                 address: address
             });
 
-            return res.json({ status: 200, msg: `Berhasil update data`});
+            return res.json({ status: 200, msg: `Silahkan Login Ulang`});
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }
