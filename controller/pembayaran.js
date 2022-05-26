@@ -30,7 +30,6 @@ module.exports = {
                     image: obj.image,
                     status: obj.status,
                     total_harga: obj.total_harga,
-                    no_rek: `16601940xx`
                 }
             });
 
@@ -118,7 +117,8 @@ module.exports = {
                 image: pembayaran.image,
                 fullname: user.fullname,
                 status: pembayaran.status,
-                total_harga: pembayaran.total_harga
+                no_rek: `16601940xx`,
+                total_harga: pembayaran.total_harga,
             };
 
             return res.json({ status: 200, data: result });
