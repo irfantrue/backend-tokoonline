@@ -94,7 +94,9 @@ module.exports = {
 
                 result[i].email = a.email
 
-                result[i].phone = a.fullname;
+                result[i].phone = a.phone;
+
+                result[i].fullname = a.fullname;
             };
 
             return res.json({ status: 200, data: result });

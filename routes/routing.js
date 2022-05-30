@@ -5,6 +5,8 @@ const {
     signup 
 } = require(`../controller/loginregis`);
 const {
+    sortingKategoriAtoZ,
+    sortingKategoriZtoA,
     search_product_by_kategori, 
     get_all_kategori, 
     add_kategori, 
@@ -19,6 +21,10 @@ const {
     delete_produk
 } = require(`../controller/produk`);
 const {
+    sortingNamaProdukAToZ,
+    sortingNamaProdukZToA,
+    sortingHargaProdukTerendah,
+    sortingHargaProdukTertinggi,
     home,
     add_cart,
     cancel_cart
@@ -49,16 +55,116 @@ const {
     update_status_pembayaran
 } = require(`../controller/pembayaran`);
 const {
-    identitas_navbar
+    identitas_navbar,
 } = require(`../controller/navbar`);
 const {
     getDataUser,
     editDataUser
 } = require(`../controller/profileUser`);
+const {
+    laporanPenjualan
+} = require(`../controller/laporanTransaksi`);
+const {
+    sortingAdminKategoriAtoZ,
+    sortingAdminKategoriZtoA,
+    sortingIdAdminKategoriTerendah,
+    sortingIdAdminKategoriTertinggi
+} = require(`../controller/Admin/sortPageKategori`);
+const {
+    sortTransaksiAdminProdukAtoZ,
+    sortTransaksiAdminProdukZtoA,
+    sortTransaksiAdminPelangganAtoZ,
+    sortTransaksiAdminPelangganZtoA,
+    sortTransaksiAdminTanggalTerbaru,
+    sortTransaksiAdminTanggalTerlama,
+    sortTransaksiAdminTotalHargaTerendah,
+    sortTransaksiAdminTotalHargaTertinggi,
+    sortTransaksiAdminStatusAToZ,
+    sortTransaksiAdminStatusZToA
+} = require(`../controller/Admin/sortPageTransaksi`);
+const {
+    sortDetailAToZ,
+    sortDetailZToA,
+    sortNamaAToZ,
+    sortNamaZToA,
+    sortTeleponTertinggi,
+    sortTeleponTerendah,
+    sortTotalHargaTertinggi,
+    sortTotalHargaTerendah,
+    sortStatusAToZ,
+    sortStatusZToA
+} = require(`../controller/Admin/sortPagePembayaran`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
-const verifyTokenAdmin = require(`../middleware/verifyTokenAdmin`);
+
+router.get(`/laporan-transaksi`, laporanPenjualan);
+
+router.get(`/sorting-nama-produk-a-to-z`, sortingNamaProdukAToZ);
+
+router.get(`/sorting-nama-produk-z-to-a`, sortingNamaProdukZToA);
+
+router.get(`/sorting-harga-produk-terendah`, sortingHargaProdukTerendah);
+
+router.get(`/sorting-harga-produk-tertinggi`, sortingHargaProdukTertinggi);
+
+router.get(`/sorting-nama-kategori-a-to-z`, sortingKategoriAtoZ);
+
+router.get(`/sorting-nama-kategori-z-to-a`, sortingKategoriZtoA);
+
+// ROUTE SORTING DASHBOARD ADMIN
+// ROUTE KATEGORI
+router.get(`/sorting-admin-kategori-a-to-z`, sortingAdminKategoriAtoZ);
+
+router.get(`/sorting-admin-kategori-z-to-a`, sortingAdminKategoriZtoA);
+
+router.get(`/sorting-admin-idkategori-terendah`, sortingIdAdminKategoriTerendah);
+
+router.get(`/sorting-admin-idkategori-tertinggi`, sortingIdAdminKategoriTertinggi);
+
+// ROUTE SORTING DASHBOARD ADMIN
+// ROUTE TRANSAKSI
+router.get(`/sort-admin-transaksi-produk-a-to-z`, sortTransaksiAdminProdukAtoZ);
+
+router.get(`/sort-admin-transaksi-produk-z-to-a`, sortTransaksiAdminProdukZtoA);
+
+router.get(`/sort-admin-transaksi-pelanggan-a-to-z`, sortTransaksiAdminPelangganAtoZ);
+
+router.get(`/sort-admin-transaksi-pelanggan-z-to-a`, sortTransaksiAdminPelangganZtoA);
+
+router.get(`/sort-admin-transaksi-tanggal-terbaru`, sortTransaksiAdminTanggalTerbaru);
+
+router.get(`/sort-admin-transaksi-tanggal-terlama`, sortTransaksiAdminTanggalTerlama);
+
+router.get(`/sort-admin-transaksi-total-harga-tertinggi`, sortTransaksiAdminTotalHargaTertinggi);
+
+router.get(`/sort-admin-transaksi-total-harga-terendah`, sortTransaksiAdminTotalHargaTerendah);
+
+router.get(`/sort-admin-transaksi-status-a-to-z`, sortTransaksiAdminStatusAToZ);
+
+router.get(`/sort-admin-transaksi-status-z-to-a`, sortTransaksiAdminStatusZToA);
+
+// ROUTE PEMBAYARAN
+router.get(`/sort-admin-pembayaran-detail-a-to-z`, sortDetailAToZ);
+
+router.get(`/sort-admin-pembayaran-detail-z-to-a`, sortDetailZToA);
+
+router.get(`/sort-admin-pembayaran-telepon-tertinggi`, sortTeleponTertinggi);
+
+router.get(`/sort-admin-pembayaran-telepon-terendah`, sortTeleponTerendah);
+
+router.get(`/sort-admin-pembayaran-nama-a-to-z`, sortNamaAToZ);
+
+router.get(`/sort-admin-pembayaran-nama-z-to-a`, sortNamaZToA);
+
+router.get(`/sort-admin-pembayaran-total-harga-tertinggi`, sortTotalHargaTertinggi);
+
+router.get(`/sort-admin-pembayaran-total-harga-terendah`, sortTotalHargaTerendah);
+
+router.get(`/sort-admin-pembayaran-status-a-to-z`, sortStatusAToZ);
+
+router.get(`/sort-admin-pembayaran-status-z-to-a`, sortStatusZToA);
+
 
 // ROUTE PROFILE USER
 router

@@ -12,18 +12,21 @@ module.exports = {
         try {
             const produk = await Produk.findAll();
 
-            // if (produk.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
-
             let result = produk.map((obj) => {
                 return {
                     nama_produk: obj.nama_produk,
-                    kategori: obj.id_kategori,
                     desc: obj.desc,
                     harga: obj.harga,
                     image: obj.image,
                     slug: obj.slug
                 }
             })
+
+            for (let i = 0; i < produk.length; i++) {
+                let a = await Kategori.findByPk(produk[i].id_kategori);
+
+                result[i].kategori = a.nama_kategori;
+            };
 
             return res.json({ status: 200, msg: `OK`, data: result });
         } catch (error) {

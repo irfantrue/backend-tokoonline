@@ -180,7 +180,8 @@ module.exports = {
                     pembayaran: obj.pembayaran,
                     harga: obj.harga,
                     total_harga: obj.total_harga,
-                    status: obj.status
+                    status: obj.status,
+                    createdAt: obj.createdAt.toLocaleDateString()
                 }
             });
 
