@@ -22,17 +22,28 @@ function deleteFile (file) {
 
 module.exports = {
     
-    laporanPenjualan: async (req, res) => {
+    getLaporanTransaksi: async (req, res) => {
         try {
             let {
                 startDate,
                 endDate
             } = req.body;
 
-            startDate= new Date(Date.parse(`2022-05-24T02:28`));
-            endDate = new Date(Date.parse(`2022-05-27T02:28`));
+            const schema = {
+                startDate: `string|empty:false|min:10`,
+                endDate: `string|empty:false|min:10`,
+            }
 
-            const transaksi = await Transaksi.findAll({
+            const check = v.compile(schema);
+
+            const result = check({
+                startDate: startDate,
+                endDate: endDate
+            });
+
+            if (result != true) return res.json({ status: 400, msg: `Tanggal tidak boleh kosong` });
+
+            let transaksi = await Transaksi.findAll({
                 where:{
                     [Op.or]: [{
                         createdAt: {
@@ -43,32 +54,37 @@ module.exports = {
                             [Op.between]: [startDate, endDate]
                         }
                     }]
+                },
+                raw: true
+            });
+
+            if (!transaksi.length) return res.json({ status: 404, msg: `Data Kosong` });
+            
+            for (let i = 0; i < transaksi.length; i++) {
+                arrUser = await Users.findByPk(transaksi[i].id_user, { raw: true });
+    
+                arrProduk = await Produk.findByPk(transaksi[i].id_produk, { raw: true });
+
+                transaksi[i].pelanggan = arrUser.fullname;
+
+                transaksi[i].nama_produk = arrProduk.nama_produk;
+            };
+
+            transaksi = transaksi.map((obj, i) => {
+                return {
+                    Produk: obj.nama_produk,
+                    Pelanggan: obj.pelanggan,
+                    Pembayaran: obj.pembayaran,
+                    Terjual: obj.jumlah,
+                    Total: `Rp.`+obj.total_harga,
+                    Status: obj.status,
+                    Tanggal: obj.createdAt.toLocaleDateString()
                 }
             });
 
-            let workbook = XLSX.utils.book_new() // Create new book excel
-
-            let data = JSON.stringify(transaksi) // Value from "karyawan" convert to string
-
-            console.log(data)
-
-            let content = JSON.parse(data) // Parse value from variable "data"
-
-            let worksheet = XLSX.utils.json_to_sheet(content) // Convert data from json to sheet
-
-            let nameXLSX = `sample.xlsx` // Name for new file excel
-
-            XLSX.utils.book_append_sheet(workbook, worksheet, `sheet1`) // Process insert data to new book
-
-            XLSX.writeFile(workbook, nameXLSX) // Write file excel
-
-            res.download(nameXLSX);
-
-            return res.json({ status: 200 });
-            
+            return res.json({ status: 200, data: transaksi})
         } catch (error) {
-            console.log(error)
             return res.status(500).json({ msg: `Invalid` });
         }
-    }
+    },
 }

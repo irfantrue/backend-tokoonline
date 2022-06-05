@@ -62,7 +62,7 @@ const {
     editDataUser
 } = require(`../controller/profileUser`);
 const {
-    laporanPenjualan
+    getLaporanTransaksi,
 } = require(`../controller/laporanTransaksi`);
 const {
     sortingAdminKategoriAtoZ,
@@ -98,7 +98,7 @@ const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
 
-router.get(`/laporan-transaksi`, laporanPenjualan);
+router.post(`/laporan-transaksi-pdf`, getLaporanTransaksi);
 
 router.get(`/sorting-nama-produk-a-to-z`, sortingNamaProdukAToZ);
 
