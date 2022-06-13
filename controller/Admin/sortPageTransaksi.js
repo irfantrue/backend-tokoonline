@@ -4,6 +4,103 @@ const Produk = require(`../../models/produk`);
 
 module.exports = {
 
+    sortTransaksiAdminKodeAtoZ: async (req, res) => {
+        try {
+            const transaksi = await Transaksi.findAll();
+
+            let data = transaksi.map((obj) => {
+                return {
+                    id: obj.id,
+                    kode_odr: obj.kode_odr,
+                    id_user: obj.id_user,
+                    jumlah: obj.jumlah,
+                    alamat_tujuan: obj.alamat_tujuan,
+                    tgl_pengiriman: obj.tgl_pengiriman.toLocaleDateString(),
+                    pembayaran: obj.pembayaran,
+                    harga: obj.harga,
+                    total_harga: obj.total_harga,
+                    status: obj.status,
+                    createdAt: obj.createdAt.toLocaleDateString()
+                }
+            });
+
+            for (let i = 0; i < transaksi.length; i++) {
+                let a = await Users.findByPk(transaksi[i].id_user);
+
+                let b = await Produk.findByPk(transaksi[i].id_produk);
+
+                // Menambahkan data image produk
+                data[i].nama_produk = b.nama_produk;
+
+                // Menambahkan data phone pelanggan
+                data[i].phone = a.phone;
+                                
+                // Menambahkan data alamat original user
+                data[i].alamat_user = a.address;
+                
+                // Menambahkan data email user
+                data[i].fullname = a.fullname;
+            };
+
+            let result = data.sort((a,b) => {
+                return b.kode_odr.localeCompare(a.kode_odr);
+            });
+            console.log(result)
+
+            return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    sortTransaksiAdminKodeZtoA: async (req, res) => {
+        try {
+            const transaksi = await Transaksi.findAll();
+
+            let data = transaksi.map((obj) => {
+                return {
+                    id: obj.id,
+                    kode_odr: obj.kode_odr,
+                    id_user: obj.id_user,
+                    jumlah: obj.jumlah,
+                    alamat_tujuan: obj.alamat_tujuan,
+                    tgl_pengiriman: obj.tgl_pengiriman.toLocaleDateString(),
+                    pembayaran: obj.pembayaran,
+                    harga: obj.harga,
+                    total_harga: obj.total_harga,
+                    status: obj.status,
+                    createdAt: obj.createdAt.toLocaleDateString()
+                }
+            });
+
+            for (let i = 0; i < transaksi.length; i++) {
+                let a = await Users.findByPk(transaksi[i].id_user);
+
+                let b = await Produk.findByPk(transaksi[i].id_produk);
+
+                // Menambahkan data image produk
+                data[i].nama_produk = b.nama_produk;
+
+                // Menambahkan data phone pelanggan
+                data[i].phone = a.phone;
+                                
+                // Menambahkan data alamat original user
+                data[i].alamat_user = a.address;
+                
+                // Menambahkan data email user
+                data[i].fullname = a.fullname;
+            };
+
+            let result = data.sort((a,b) => {
+                return a.kode_odr.localeCompare(b.kode_odr);
+            });
+
+            return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
     sortTransaksiAdminProdukAtoZ: async (req, res) => {
         try {
             const transaksi = await Transaksi.findAll();
@@ -11,6 +108,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -58,6 +156,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -105,6 +204,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -153,6 +253,7 @@ module.exports = {
                 return {
                     id: obj.id,
                     id_user: obj.id_user,
+                    kode_odr: obj.kode_odr,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
                     tgl_pengiriman: obj.tgl_pengiriman.toLocaleDateString(),
@@ -199,6 +300,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -246,6 +348,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -293,6 +396,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -340,6 +444,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -387,6 +492,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,
@@ -434,6 +540,7 @@ module.exports = {
             let data = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,

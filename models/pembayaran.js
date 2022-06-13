@@ -4,6 +4,10 @@ const db = require(`../database`);
 const {DataTypes} = Sequelize;
 
 const Pembayaran = db.define(`pembayaran`, {
+    kode_pby:{
+        type: DataTypes.STRING,
+        unique: true
+    },
     id_user:{
         type: DataTypes.INTEGER
     },

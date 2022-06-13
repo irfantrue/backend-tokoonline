@@ -6,7 +6,8 @@ const v = new Validator();
 const jwt_decode = require(`jwt-decode`);
 const Transaksi = require('../models/transaksi');
 const Produk = require(`../models/produk`);
-const transaksi = require('./transaksi');
+const generateKodeUnik = require(`./function/generateKodeUnik`);
+
 
 module.exports = {
 
@@ -196,7 +197,14 @@ module.exports = {
             deskripsi = deskripsi.toString().replace(/,+/g, `, `);
 
             if (pembayaran == `BCA Transfer`) {
+                let lastData = await Pembayaran.findAll({
+                    limit: 1,
+                    order: [ [ `kode_pby`, `DESC` ] ],
+                    raw: true
+                });
+
                 pembayaran_user = await Pembayaran.create({
+                    kode_pby: generateKodeUnik(lastData,4),
                     id_user: user.id,
                     image: null,
                     desc: deskripsi,
@@ -206,11 +214,17 @@ module.exports = {
             };
 
             for (let i = 0; i < data_keranjang.length; i++) {
+                let lastData = await Transaksi.findAll({
+                    limit: 1,
+                    order: [ [ `kode_odr`, `DESC` ] ],
+                    raw: true
+                });
+
                 await Transaksi.create({
+                    kode_odr: generateKodeUnik(lastData,3),
                     id_produk: data_keranjang[i].id_produk,
                     id_user: data_keranjang[i].id_user,
                     id_pembayaran: pembayaran_user.id,
-                    // image: data_keranjang[i].image,
                     alamat_tujuan: alamat_tujuan,
                     tgl_pengiriman: tanggalJadiPesanan,
                     pembayaran: pembayaran,

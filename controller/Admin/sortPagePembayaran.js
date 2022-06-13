@@ -2,6 +2,80 @@ const Users = require(`../../models/userdb`);
 const Pembayaran = require(`../../models/pembayaran`);
 
 module.exports = {
+
+    sortPembayaranKodeAtoZ: async (req, res) => {
+        try {
+            const pembayaran = await Pembayaran.findAll();
+
+            if (pembayaran.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
+
+            let data = pembayaran.map((obj) => {
+                return {
+                    id: obj.id,
+                    kode_pby: obj.kode_pby,
+                    desc: obj.desc,
+                    image: obj.image,
+                    total_harga: obj.total_harga,
+                    status: obj.status
+                }
+            });
+
+            for (let i = 0; i < pembayaran.length; i++) {
+                let a = await Users.findByPk(pembayaran[i].id_user);
+
+                data[i].email = a.email
+
+                data[i].phone = a.phone;
+
+                data[i].fullname = a.fullname;
+            };
+
+            let result = data.sort((a,b) => {
+                return b.kode_pby.localeCompare(a.kode_pby);
+            });
+
+            return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    sortPembayaranKodeZtoA: async (req, res) => {
+        try {
+            const pembayaran = await Pembayaran.findAll();
+
+            if (pembayaran.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
+
+            let data = pembayaran.map((obj) => {
+                return {
+                    id: obj.id,
+                    kode_pby: obj.kode_pby,
+                    desc: obj.desc,
+                    image: obj.image,
+                    total_harga: obj.total_harga,
+                    status: obj.status
+                }
+            });
+
+            for (let i = 0; i < pembayaran.length; i++) {
+                let a = await Users.findByPk(pembayaran[i].id_user);
+
+                data[i].email = a.email
+
+                data[i].phone = a.phone;
+
+                data[i].fullname = a.fullname;
+            };
+
+            let result = data.sort((a,b) => {
+                return a.kode_pby.localeCompare(b.kode_pby);
+            });
+
+            return res.json({ status: 200, data: result });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
     
     sortDetailAToZ: async (req, res) => {
         try {
@@ -12,6 +86,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -48,6 +123,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -84,6 +160,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -120,6 +197,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -156,6 +234,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -192,6 +271,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -228,6 +308,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -264,6 +345,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -300,6 +382,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -336,6 +419,7 @@ module.exports = {
             let data = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,

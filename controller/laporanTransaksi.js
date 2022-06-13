@@ -73,7 +73,7 @@ module.exports = {
             transaksi = transaksi.map((obj, i) => {
                 return {
                     Produk: obj.nama_produk,
-                    Pelanggan: obj.pelanggan,
+                    kodeOrder: obj.kode_odr,
                     Pembayaran: obj.pembayaran,
                     Terjual: obj.jumlah,
                     Total: `Rp.`+obj.total_harga,

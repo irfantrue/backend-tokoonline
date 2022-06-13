@@ -4,6 +4,10 @@ const db = require(`../database`);
 const {DataTypes} = Sequelize;
 
 const Produk = db.define(`produk`,{
+    kode_prd:{
+        type: DataTypes.STRING,
+        unique: true
+    },
     nama_produk:{
         type: DataTypes.STRING,
         unique: true

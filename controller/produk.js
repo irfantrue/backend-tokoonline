@@ -5,6 +5,7 @@ const Keranjang = require('../models/keranjang');
 const Transaksi = require('../models/transaksi');
 const { Op } = require("sequelize");
 const v = new Validator();
+const generateKodeUnik = require(`./function/generateKodeUnik`);
 
 module.exports = {
 
@@ -14,14 +15,15 @@ module.exports = {
 
             let result = produk.map((obj) => {
                 return {
+                    kode_prd: obj.kode_prd,
                     nama_produk: obj.nama_produk,
                     desc: obj.desc,
                     harga: obj.harga,
                     image: obj.image,
                     slug: obj.slug
                 }
-            })
-
+            });
+            
             for (let i = 0; i < produk.length; i++) {
                 let a = await Kategori.findByPk(produk[i].id_kategori);
 
@@ -30,6 +32,7 @@ module.exports = {
 
             return res.json({ status: 200, msg: `OK`, data: result });
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ msg: `Invalid` });
         }
     },
@@ -126,7 +129,14 @@ module.exports = {
 
             if (cekslug) return res.json({ status: 409, msg: `Nama produk telah digunakan` });
 
+            let lastData = await Produk.findAll({
+                limit: 1,
+                order: [ [ `kode_prd`, `DESC` ] ],
+                raw: true
+            })
+
             await Produk.create({
+                kode_prd: generateKodeUnik(lastData,1),
                 nama_produk: nama_produk,
                 id_kategori: id_kategori,
                 desc: desc,

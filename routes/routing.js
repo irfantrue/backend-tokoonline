@@ -5,8 +5,6 @@ const {
     signup 
 } = require(`../controller/loginregis`);
 const {
-    sortingKategoriAtoZ,
-    sortingKategoriZtoA,
     search_product_by_kategori, 
     get_all_kategori, 
     add_kategori, 
@@ -21,10 +19,6 @@ const {
     delete_produk
 } = require(`../controller/produk`);
 const {
-    sortingNamaProdukAToZ,
-    sortingNamaProdukZToA,
-    sortingHargaProdukTerendah,
-    sortingHargaProdukTertinggi,
     home,
     add_cart,
     cancel_cart
@@ -65,12 +59,26 @@ const {
     getLaporanTransaksi,
 } = require(`../controller/laporanTransaksi`);
 const {
+    sortingProdukKodeAtoZ,
+    sortingProdukKodeZtoA,
+    sortingKategoriAtoZ,
+    sortingKategoriZtoA,
+    sortingNamaProdukAToZ,
+    sortingNamaProdukZToA,
+    sortingHargaProdukTerendah,
+    sortingHargaProdukTertinggi,
+} = require(`../controller/Admin/sortPageProduk`);
+const {
+    sortAdminKategoriKodeAtoZ,
+    sortAdminKategoriKodeZtoA,
     sortingAdminKategoriAtoZ,
     sortingAdminKategoriZtoA,
     sortingIdAdminKategoriTerendah,
     sortingIdAdminKategoriTertinggi
 } = require(`../controller/Admin/sortPageKategori`);
 const {
+    sortTransaksiAdminKodeAtoZ,
+    sortTransaksiAdminKodeZtoA,
     sortTransaksiAdminProdukAtoZ,
     sortTransaksiAdminProdukZtoA,
     sortTransaksiAdminPelangganAtoZ,
@@ -83,6 +91,8 @@ const {
     sortTransaksiAdminStatusZToA
 } = require(`../controller/Admin/sortPageTransaksi`);
 const {
+    sortPembayaranKodeAtoZ,
+    sortPembayaranKodeZtoA,
     sortDetailAToZ,
     sortDetailZToA,
     sortNamaAToZ,
@@ -99,6 +109,11 @@ const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
 
 router.post(`/laporan-transaksi-pdf`, getLaporanTransaksi);
+// ROUTE SORTING DASHBOARD ADMIN
+
+router.get(`/sorting-produk-kode-a-to-z`, sortingProdukKodeAtoZ);
+
+router.get(`/sorting-produk-kode-z-to-a`, sortingProdukKodeZtoA);
 
 router.get(`/sorting-nama-produk-a-to-z`, sortingNamaProdukAToZ);
 
@@ -112,8 +127,11 @@ router.get(`/sorting-nama-kategori-a-to-z`, sortingKategoriAtoZ);
 
 router.get(`/sorting-nama-kategori-z-to-a`, sortingKategoriZtoA);
 
-// ROUTE SORTING DASHBOARD ADMIN
 // ROUTE KATEGORI
+router.get(`/sorting-admin-kategori-kode-a-to-z`, sortAdminKategoriKodeAtoZ);
+
+router.get(`/sorting-admin-kategori-kode-z-to-a`, sortAdminKategoriKodeZtoA);
+
 router.get(`/sorting-admin-kategori-a-to-z`, sortingAdminKategoriAtoZ);
 
 router.get(`/sorting-admin-kategori-z-to-a`, sortingAdminKategoriZtoA);
@@ -124,6 +142,10 @@ router.get(`/sorting-admin-idkategori-tertinggi`, sortingIdAdminKategoriTertingg
 
 // ROUTE SORTING DASHBOARD ADMIN
 // ROUTE TRANSAKSI
+router.get(`/sort-admin-transaksi-kode-a-to-z`, sortTransaksiAdminKodeAtoZ);
+
+router.get(`/sort-admin-transaksi-kode-z-to-a`, sortTransaksiAdminKodeZtoA);
+
 router.get(`/sort-admin-transaksi-produk-a-to-z`, sortTransaksiAdminProdukAtoZ);
 
 router.get(`/sort-admin-transaksi-produk-z-to-a`, sortTransaksiAdminProdukZtoA);
@@ -145,6 +167,10 @@ router.get(`/sort-admin-transaksi-status-a-to-z`, sortTransaksiAdminStatusAToZ);
 router.get(`/sort-admin-transaksi-status-z-to-a`, sortTransaksiAdminStatusZToA);
 
 // ROUTE PEMBAYARAN
+router.get(`/sort-admin-pembayaran-kode-a-to-z`, sortPembayaranKodeAtoZ);
+
+router.get(`/sort-admin-pembayaran-kode-z-to-a`, sortPembayaranKodeZtoA);
+
 router.get(`/sort-admin-pembayaran-detail-a-to-z`, sortDetailAToZ);
 
 router.get(`/sort-admin-pembayaran-detail-z-to-a`, sortDetailZToA);

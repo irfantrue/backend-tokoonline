@@ -26,6 +26,7 @@ module.exports = {
             let result = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     status: obj.status,
@@ -75,13 +76,14 @@ module.exports = {
 
     get_pembayaran_all: async (req, res) => {
         try {
-            const pembayaran = await Pembayaran.findAll({ order:[[`createdAt`, `DESC`]] });
+            const pembayaran = await Pembayaran.findAll();
 
             if (pembayaran.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
             let result = pembayaran.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_pby: obj.kode_pby,
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
@@ -116,6 +118,7 @@ module.exports = {
             const user = await Users.findByPk(pembayaran.id_user);
 
             let result = {
+                kode_pby: pembayaran.kode_pby,
                 image: pembayaran.image,
                 fullname: user.fullname,
                 status: pembayaran.status,

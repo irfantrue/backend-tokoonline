@@ -21,6 +21,7 @@ module.exports = {
             const produk = await Produk.findByPk(transaksi.id_produk);
 
             let result = {
+                kode_odr: transaksi.kode_odr,
                 nama_user: user.fullname,
                 phone: user.phone,
                 alamat_1: user.address,
@@ -166,13 +167,14 @@ module.exports = {
     // UNTUK ADMIN DASHBOARD
     get_all_transaksi_user: async (req, res) => {
         try {
-            const transaksi = await Transaksi.findAll({ order:[[`createdAt`, `DESC`]] });
+            const transaksi = await Transaksi.findAll();
 
             // if (transaksi.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
 
             let result = transaksi.map((obj) => {
                 return {
                     id: obj.id,
+                    kode_odr: obj.kode_odr,
                     id_user: obj.id_user,
                     jumlah: obj.jumlah,
                     alamat_tujuan: obj.alamat_tujuan,

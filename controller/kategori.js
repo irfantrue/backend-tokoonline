@@ -2,68 +2,9 @@ const Kategori = require(`../models/kategori`);
 const Produk = require(`../models/produk`);
 const Validator = require(`fastest-validator`);
 const v = new Validator();
+const generateKodeUnik = require(`./function/generateKodeUnik`);
 
 module.exports = {
-
-    sortingKategoriAtoZ: async (req, res) => {
-        try {
-            const produk = await Produk.findAll();
-
-            let data = produk.map((obj) => {
-                return {
-                    nama_produk: obj.nama_produk,
-                    desc: obj.desc,
-                    harga: obj.harga,
-                    image: obj.image,
-                    slug: obj.slug,              
-                }
-            })
-
-            for (let i = 0; i < produk.length; i++) {
-                let a = await Kategori.findByPk(produk[i].id_kategori);
-
-                data[i].kategori = a.nama_kategori;
-            }
-
-            let result = data.sort((a,b) => {
-                return a.kategori.localeCompare(b.kategori);
-            });
-
-            return res.json({ status: 200, data: result });
-        } catch (error) {
-            return res.status(500).json({ msg: `Invalid` });
-        }
-    },
-
-    sortingKategoriZtoA: async (req, res) => {
-        try {
-            const produk = await Produk.findAll();
-
-            let data = produk.map((obj) => {
-                return {
-                    nama_produk: obj.nama_produk,
-                    desc: obj.desc,
-                    harga: obj.harga,
-                    image: obj.image,
-                    slug: obj.slug,              
-                }
-            })
-
-            for (let i = 0; i < produk.length; i++) {
-                let a = await Kategori.findByPk(produk[i].id_kategori);
-
-                data[i].kategori = a.nama_kategori;
-            }
-
-            let result = data.sort((a,b) => {
-                return b.kategori.localeCompare(a.kategori);
-            });
-
-            return res.json({ status: 200, data: result });
-        } catch (error) {
-            return res.status(500).json({ msg: `Invalid` });
-        }
-    },
 
     search_product_by_kategori: async (req, res) => {
         try {
@@ -120,7 +61,14 @@ module.exports = {
 
             if (cekslug) return res.json({ status: 409, msg: `Nama kategori telah digunakan` });
 
+            let lastData = await Kategori.findAll({
+                limit: 1,
+                order: [ [ `kode_ktr`, `DESC` ] ],
+                raw: true
+            })
+
             await Kategori.create({
+                kode_ktr: generateKodeUnik(lastData,2),
                 nama_kategori: nama_kategori,
                 slug: slug
             });
