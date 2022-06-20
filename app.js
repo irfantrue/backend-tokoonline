@@ -50,6 +50,6 @@ app.use((req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, `0.0.0.0`, () => {
   console.log(`Run on Port ${process.env.PORT}`);
 });
