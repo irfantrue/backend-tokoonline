@@ -104,6 +104,12 @@ const {
     sortStatusAToZ,
     sortStatusZToA
 } = require(`../controller/Admin/sortPagePembayaran`);
+const  {
+    sortingNamaProdukByKategoriAToZ,
+    sortingNamaProdukByKategoriZToA,
+    sortingHargaProdukByKategoriTertinggi,
+    sortingHargaProdukByKategoriTerendah
+} = require(`../controller/sortPageProdukKategori`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifyToken`);
@@ -190,6 +196,15 @@ router.get(`/sort-admin-pembayaran-total-harga-terendah`, sortTotalHargaTerendah
 router.get(`/sort-admin-pembayaran-status-a-to-z`, sortStatusAToZ);
 
 router.get(`/sort-admin-pembayaran-status-z-to-a`, sortStatusZToA);
+
+// SORTING PRODUK BY KATEGORI FOR USER
+router.get(`/sort-produk-by-kategori-a-to-z/:slug`, sortingNamaProdukByKategoriAToZ);
+
+router.get(`/sort-produk-by-kategori-z-to-a/:slug`, sortingNamaProdukByKategoriZToA);
+
+router.get(`/sort-produk-by-kategori-harga-tertinggi/:slug`, sortingHargaProdukByKategoriTertinggi);
+
+router.get(`/sort-produk-by-kategori-harga-terendah/:slug`, sortingHargaProdukByKategoriTerendah);
 
 
 // ROUTE PROFILE USER
