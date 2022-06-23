@@ -112,7 +112,7 @@ const  {
 } = require(`../controller/sortPageProdukKategori`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
-const verifytoken = require(`../middleware/verifyToken`);
+const verifytoken = require(`../middleware/verifytoken`);
 
 router.post(`/laporan-transaksi-pdf`, getLaporanTransaksi);
 // ROUTE SORTING DASHBOARD ADMIN
