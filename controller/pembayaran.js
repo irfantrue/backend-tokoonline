@@ -4,6 +4,7 @@ const v = new Validator();
 const jwt_decode = require(`jwt-decode`);
 const Pembayaran = require(`../models/pembayaran`);
 const { Op } = require("sequelize");
+const Transaksi = require("../models/transaksi");
 
 module.exports = {
 
@@ -228,6 +229,28 @@ module.exports = {
             );
 
             return res.json({ status: 200, msg: `Berhasil update data` });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+    
+    deletePembayaranUserById: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const pembayaran = await Pembayaran.findByPk(id);
+
+            if (!pembayaran) return res.json({ status: 404, msg: `Data Not Found` });
+
+            await Transaksi.destroy({
+                where: { id_pembayaran: id }
+            });
+
+            await Pembayaran.destroy({
+                where: { id: id }
+            });
+
+            return res.json({ status: 200, msg: `Berhasil delete pembayaran` });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

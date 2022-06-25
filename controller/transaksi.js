@@ -176,22 +176,6 @@ module.exports = {
         }
     },
 
-    delete_transaksi: async (req, res) => {
-        try {
-            const { id } = req.params;
-
-            const transaksi = await Transaksi.findByPk(id);
-
-            if (!transaksi) return res.json({ status: 404, msg: `Transaksi item tidak ditemukan` });
-
-            await transaksi.destroy();
-
-            return res.json({ status: 200, msg: `Berhasil hapus order` });
-        } catch (error) {
-            return res.status(500).json({ msg: `Invalid` });
-        }
-    },
-
     batal_transaksi: async (req, res) => {
         try {
             const authHeader = req.headers[`authorization`];
@@ -322,6 +306,28 @@ module.exports = {
             await transaksi.update({ status: status });
 
             return res.json({ status: 200, msg: `Berhasil update data` });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    deleteTransaksiUserById: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const transaksi = await Transaksi.findByPk(id);
+
+            if (!transaksi) return res.json({ status: 404, msg: `Data Not Found` });
+
+            await Transaksi.destroy({
+                where: { id: id }
+            });
+
+            await Pembayaran.destroy({
+                where: { id: transaksi.id_pembayaran }
+            });
+
+            return res.json({ status: 200, msg: `Berhasil delete transaksi`});
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

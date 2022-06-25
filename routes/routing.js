@@ -39,8 +39,8 @@ const {
     update_status_transaksi,
     sortingAllTransaksiByDate,
     get_all_transaksi_user,
-    delete_transaksi,
-    batal_transaksi
+    batal_transaksi,
+    deleteTransaksiUserById
 } = require(`../controller/transaksi`);
 const {
     get_pembayaran_user,
@@ -48,7 +48,8 @@ const {
     update_pembayaran_user,
     get_pembayaran_all,
     detail_pembayaran,
-    update_status_pembayaran
+    update_status_pembayaran,
+    deletePembayaranUserById
 } = require(`../controller/pembayaran`);
 const {
     identitas_navbar,
@@ -268,7 +269,7 @@ router
     // ROUTE UPDATE STATUS TRANSAKSI (ADMIN)
     .put(verifytoken, update_status_transaksi)
     // ROUTE BATAL TRANSAKSI / ORDER (ADMIN)
-    .delete(verifytoken, delete_transaksi);
+    .delete(verifytoken, deleteTransaksiUserById);
 
 // ROUTE PEMBAYARAN USER
 router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
@@ -285,7 +286,8 @@ router.get(`/pembayaran`, verifytoken, get_pembayaran_all);
 router
     .route(`/pembayaran/:id`)
     .get(verifytoken, detail_pembayaran)
-    .put(verifytoken, update_status_pembayaran);
+    .put(verifytoken, update_status_pembayaran)
+    .delete(verifytoken, deletePembayaranUserById);
 
 // ROUTE KATEGORI
 router
