@@ -37,12 +37,14 @@ const {
     detailTransaksiUser,
     get_produk_transaksi,
     update_status_transaksi,
+    sortingAllTransaksiByDate,
     get_all_transaksi_user,
     delete_transaksi,
     batal_transaksi
 } = require(`../controller/transaksi`);
 const {
     get_pembayaran_user,
+    sortingAllPembayaranByDate,
     update_pembayaran_user,
     get_pembayaran_all,
     detail_pembayaran,
@@ -251,6 +253,8 @@ router.put(`/cart/kurang-jumlah/:id`, verifytoken, kurang_jumlah_produk);
 // ROUTE TRANSAKSI (USER)
 router.get(`/transaksi-user`,verifytoken, get_produk_transaksi);
 
+router.post(`/transaksi-user-sort-by-date`, verifytoken, sortingAllTransaksiByDate);
+
 router.get(`/transaksi-user/:id`, verifytoken, detailTransaksiUser);
 
 // ROUTE BATAL TRANSAKSI / ORDER (USER)
@@ -268,6 +272,8 @@ router
 
 // ROUTE PEMBAYARAN USER
 router.get(`/pembayaran-user`, verifytoken, get_pembayaran_user);
+
+router.post(`/pembayaran-user-sort-by-date`, verifytoken, sortingAllPembayaranByDate);
 
 // ROUTE UPDATE IMAGE PEMBAYARAN
 router.put(`/pembayaran-user/:id`,verifytoken, update_pembayaran_user);

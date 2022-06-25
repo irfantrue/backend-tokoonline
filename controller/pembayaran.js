@@ -3,6 +3,7 @@ const Users = require(`../models/userdb`);
 const v = new Validator();
 const jwt_decode = require(`jwt-decode`);
 const Pembayaran = require(`../models/pembayaran`);
+const { Op } = require("sequelize");
 
 module.exports = {
 
@@ -69,6 +70,70 @@ module.exports = {
             });
 
             return res.json({ status: 200, msg: `Berhasil update` });
+        } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    sortingAllPembayaranByDate: async (req, res) => {
+        try {
+            const authHeader = req.headers[`authorization`];
+
+            const token = authHeader && authHeader.split(` `)[1];
+
+            let decode = jwt_decode(token);
+
+            const user = await Users.findOne({ where: { email: decode.email } });
+
+            let {
+                startDate,
+                endDate,
+            } = req.body;
+            
+            const schema = {
+                startDate: `string|empty:false|min:10`,
+                endDate: `string|empty:false|min:10`,
+            }
+
+            const check = v.compile(schema);
+
+            const result = check({
+                startDate: startDate,
+                endDate: endDate
+            });
+
+            if (result != true) return res.json({ status: 400, msg: `Tanggal tidak boleh kosong` });
+
+            const pembayaran = await Pembayaran.findAll({ 
+                where: { 
+                    id_user: user.id,
+                    [Op.or]: [{
+                        createdAt: {
+                            [Op.between]: [startDate, endDate]
+                        }
+                    }, {
+                        createdAt: {
+                            [Op.between]: [startDate, endDate]
+                        }
+                    }]
+                },
+                order: [[`createdAt`, `DESC`]],
+            });
+
+            if (pembayaran.length == 0) return res.json({ status: 404, msg: `Data Not Found` });
+
+            let data = pembayaran.map((obj) => {
+                return {
+                    id: obj.id,
+                    kode_pby: obj.kode_pby,
+                    desc: obj.desc,
+                    image: obj.image,
+                    status: obj.status,
+                    total_harga: obj.total_harga,
+                }
+            });
+
+            return res.json({ status: 200, data: data });
         } catch (error) {
             return res.status(500).json({ msg: `Invalid` });
         }

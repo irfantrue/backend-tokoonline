@@ -5,6 +5,7 @@ const v = new Validator();
 const jwt_decode = require(`jwt-decode`);
 const Transaksi = require('../models/transaksi');
 const Pembayaran = require(`../models/pembayaran`);
+const { Op } = require("sequelize");
 
 module.exports = {
 
@@ -39,6 +40,88 @@ module.exports = {
 
             return res.json({ status: 200, data: result });
         } catch (error) {
+            return res.status(500).json({ msg: `Invalid` });
+        }
+    },
+
+    sortingAllTransaksiByDate: async (req, res) => {
+        try {
+            const authHeader = req.headers[`authorization`];
+
+            const token = authHeader && authHeader.split(` `)[1];
+
+            let decode = jwt_decode(token);
+
+            const user = await Users.findOne({ where: { email: decode.email } });
+
+            let {
+                startDate,
+                endDate,
+            } = req.body;
+            
+            const schema = {
+                startDate: `string|empty:false|min:10`,
+                endDate: `string|empty:false|min:10`,
+            }
+
+            const check = v.compile(schema);
+
+            const result = check({
+                startDate: startDate,
+                endDate: endDate
+            });
+
+            if (result != true) return res.json({ status: 400, msg: `Tanggal tidak boleh kosong` });
+
+            let transaksi = await Transaksi.findAll({
+                where:{
+                    id_user: user.id,
+                    [Op.or]: [{
+                        createdAt: {
+                            [Op.between]: [startDate, endDate]
+                        }
+                    }, {
+                        createdAt: {
+                            [Op.between]: [startDate, endDate]
+                        }
+                    }]
+                },
+                order: [[`createdAt`, `DESC`]],
+                raw: true
+            });
+
+            if (transaksi.length === 0) return res.json({ status: 404, msg: `Data Kosong` });
+
+            let produk = transaksi.map((obj) => {
+                return {
+                    id: obj.id,
+                    id_produk: obj.id_produk,
+                    alamat_tujuan: obj.alamat_tujuan,
+                    pembayaran: obj.pembayaran,
+                    jumlah: obj.jumlah,
+                    total_harga: obj.total_harga,
+                    tgl_pengiriman: `${obj.tgl_pengiriman.toLocaleDateString()} ${obj.tgl_pengiriman.toLocaleTimeString()}`,
+                    status: obj.status,
+                    tgl_pembelian: obj.createdAt.toLocaleDateString()
+                }
+            });
+
+            for (let i = 0; i < transaksi.length; i++) {
+                let a = await Produk.findByPk(transaksi[i].id_produk);
+
+                // Menambahkan harga satuan produk
+                produk[i].harga = a.harga;
+
+                // Menambahkan data image produk
+                produk[i].image = a.image
+                
+                // Menambahkan data nama produk
+                produk[i].nama_produk = a.nama_produk;
+            };
+
+            return res.json({ status: 200, msg: `OK`, data: produk })
+        } catch (error) {
+            console.log(error)
             return res.status(500).json({ msg: `Invalid` });
         }
     },
