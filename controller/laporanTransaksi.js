@@ -76,7 +76,7 @@ module.exports = {
                     kodeOrder: obj.kode_odr,
                     Pembayaran: obj.pembayaran,
                     Terjual: obj.jumlah,
-                    Total: `Rp.`+obj.total_harga,
+                    Total: obj.total_harga,
                     Status: obj.status,
                     Tanggal: obj.createdAt.toLocaleDateString()
                 }
