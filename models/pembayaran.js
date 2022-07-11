@@ -20,6 +20,9 @@ const Pembayaran = db.define(`pembayaran`, {
     status:{
         type: DataTypes.STRING
     },
+    ongkir:{
+        type: DataTypes.INTEGER
+    },
     total_harga:{
         type: DataTypes.INTEGER
     },

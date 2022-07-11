@@ -153,7 +153,8 @@ module.exports = {
                     desc: obj.desc,
                     image: obj.image,
                     total_harga: obj.total_harga,
-                    status: obj.status
+                    status: obj.status,
+                    ongkir: obj.ongkir
                 }
             });
 
@@ -188,6 +189,7 @@ module.exports = {
                 image: pembayaran.image,
                 fullname: user.fullname,
                 status: pembayaran.status,
+                ongkir: pembayaran.ongkir,
                 no_rek: `16601940xx`,
                 total_harga: pembayaran.total_harga,
             };

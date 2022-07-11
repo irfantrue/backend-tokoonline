@@ -208,6 +208,7 @@ module.exports = {
                     id_user: user.id,
                     image: null,
                     desc: deskripsi,
+                    ongkir: 0,
                     total_harga: total,
                     status: `Belum Lunas`
                 });

@@ -113,6 +113,9 @@ const  {
     sortingHargaProdukByKategoriTertinggi,
     sortingHargaProdukByKategoriTerendah
 } = require(`../controller/sortPageProdukKategori`);
+const {
+    tambahOngkir
+} = require(`../controller/Admin/ongkir`);
 const fileSizeLimitErrorHandler = require(`../middleware/filesize`);
 const imageupload = require(`../middleware/imageupload`);
 const verifytoken = require(`../middleware/verifytoken`);
@@ -288,6 +291,11 @@ router
     .get(verifytoken, detail_pembayaran)
     .put(verifytoken, update_status_pembayaran)
     .delete(verifytoken, deletePembayaranUserById);
+
+// ROUTE UPDATE ONGKIR
+router
+    .route(`/pembayaran/ongkir/:id`)
+    .put(verifytoken, tambahOngkir);
 
 // ROUTE KATEGORI
 router
